@@ -1,0 +1,77 @@
+/* =========================
+   BAR CHART – MINIMAL & GLASS LOOK
+   ========================= */
+/* Prima serie con ombra profonda */
+.default-color0.chart-bar {
+    -fx-background-color: linear-gradient(to top, #ff6a3d, #ff8c5a);
+    -fx-background-radius: 5 5 0 0;
+    /* Ombra: tipo, colore (nero al 20%), raggio di sfumatura, ampiezza, offset x, offset y */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0.5, 0, 5);
+}
+
+/* Seconda serie con ombra profonda */
+.default-color1.chart-bar {
+    -fx-background-color: linear-gradient(to top, #3ddc84, #6ee7a8);
+    -fx-background-radius: 5 5 0 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0.5, 0, 5);
+}
+
+/* Effetto al passaggio del mouse: l'ombra diventa più intensa */
+.chart-bar:hover {
+    -fx-opacity: 0.9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 20, 0.5, 0, 8);
+}
+
+/* Font degli assi: pulito, spaziatura moderna e colore morbido */
+.axis {
+    -fx-font-family: "Inter", "Montserrat", "Segoe UI", sans-serif;
+    -fx-font-size: 11px;
+    -fx-tick-label-fill: #5e5e5e; /* Grigio antracite morbido */
+}
+
+/* Rende gli assi sottilissimi e quasi invisibili */
+.axis .axis-line {
+    -fx-stroke: rgba(0, 0, 0, 0.1); /* Linea quasi trasparente */
+    -fx-stroke-width: 0.01px;
+}
+
+/* Nasconde le tacche (ticks) per un look più pulito */
+.axis-tick-mark, .axis-minor-tick-mark {
+    -fx-stroke: transparent;
+}
+
+/* Sfondo del grafico quasi trasparente */
+.chart-plot-background {
+    /* Bianco con opacità al 30% per un effetto vetro */
+    -fx-background-color: rgba(255, 255, 255, 0.0);
+}
+
+/* Rimuove lo sfondo esterno della Chart per far vedere quello della finestra */
+.chart {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+
+/* Linee della griglia: solo orizzontali, molto tenui */
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent; /* Nasconde le linee verticali */
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: rgba(0, 0, 0, 0.01); /* Orizzontali appena accennate */
+    -fx-stroke-width: 0.01px;
+}
+/* Colpisce specificamente i numeri/categorie */
+.axis .tick-label {
+    -fx-font-family: "Segoe UI", "Helvetica", Arial, sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold; /* Prova il grassetto per vedere subito se cambia */
+    -fx-fill: #5e5e5e; /* Per i testi nei grafici si usa -fx-fill invece di -fx-text-fill */
+}
+
+
+/* Titolo moderno */
+.chart-title {
+    -fx-font-family: "Segoe UI Semibold", sans-serif;
+    -fx-text-fill: #333333;
+    -fx-font-size: 16px;
+}

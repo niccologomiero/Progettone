@@ -1,8 +1,13 @@
-package com.gomiero.progettonegomiero.classi;
+package com.gomiero.progettonegomiero.models;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Utente {
     private String email;
     private String password;
+    private Date dataCreazioneUtente = new Date();
+    private Note notesUtente;
 
     public String getEmail(){
         return email;
@@ -13,12 +18,19 @@ public class Utente {
     public Utente(String email, String password) {
         this.email = email;
         this.password = password;
+        this.notesUtente = new Note();
     }
 
+    public ArrayList<String> getNotes(){
+        return notesUtente.getPersonalNotes();
+    }
+    public ArrayList<Date> getDates(){
+        return notesUtente.getDatesNotes();
+    }
 
     @Override
     public String toString(){
-        return email + " " + password;
+        return email + " " + password + " " + dataCreazioneUtente;
     }
 
 

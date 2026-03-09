@@ -5,4 +5,6 @@ module com.gomiero.progettonegomiero {
 
     opens com.gomiero.progettonegomiero to javafx.fxml;
     exports com.gomiero.progettonegomiero;
+    exports com.gomiero.progettonegomiero.controllers;
+    opens com.gomiero.progettonegomiero.controllers to javafx.fxml;
 }
