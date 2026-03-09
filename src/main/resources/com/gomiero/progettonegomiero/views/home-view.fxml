@@ -118,7 +118,7 @@
          </VBox>
          <VBox alignment="CENTER" prefHeight="47.0" prefWidth="46.0">
             <children>
-                  <Button onAction="#ReturnPage" style="-fx-background-color: trasparent;">
+                  <Button onAction="#goToNotes" style="-fx-background-color: trasparent;">
                       <graphic>
                           <ImageView fitHeight="25.0" fitWidth="20.0" layoutX="6.0" layoutY="138.0" mouseTransparent="true">
                               <image>

@@ -1,7 +1,6 @@
 package com.gomiero.progettonegomiero.controllers;
 
 import com.gomiero.progettonegomiero.models.Utente;
-import com.gomiero.progettonegomiero.models.Utenti;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,12 +43,16 @@ public class HomeController {
 
     @FXML
     private void initialize(){
+        if (asseX == null || barChart == null) {
+            return; // la view non è più attiva, evita il crash
+        }
+
         if (tempNickName != null){
             titlePortfolio.setStyle("-fx-text-fill: black");
             titlePortfolio.setText("Portfolio di " + tempNickName);
         }
-        String[] mesi = DateFormatSymbols.getInstance(Locale.ITALY).getMonths();
 
+        String[] mesi = DateFormatSymbols.getInstance(Locale.ITALY).getMonths();
         mesiNomi.addAll(Arrays.copyOfRange(mesi,0,12));
 
         asseX.setCategories(mesiNomi);
@@ -63,7 +66,7 @@ public class HomeController {
         barChart.getData().add(serie);
     }
 
-    public void changeScenario(ActionEvent actionEvent) {
+    public void goToNotes(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/com/gomiero/progettonegomiero/views/notes-view.fxml"
@@ -82,6 +85,18 @@ public class HomeController {
     }
 
     public void ReturnPage(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/com/gomiero/progettonegomiero/views/login-view.fxml"
+            ));
+            Parent root = loader.load();
+            Controller controller = loader.getController();
 
+            Stage stage = (Stage) containerInit.getScene().getWindow();
+            stage.getScene().setRoot(root);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
