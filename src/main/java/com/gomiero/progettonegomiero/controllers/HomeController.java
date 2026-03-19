@@ -23,13 +23,6 @@ public class HomeController {
     private Utente utente;
     private String tempNickName;
 
-    public void setterUtente(Utente t, String nickName) {
-        this.utente = t;
-        this.tempNickName = nickName;
-        if (titlePortfolio != null){
-            titlePortfolio.setText("Portfolio di " + nickName);
-        }
-    }
     @FXML
     private Label titlePortfolio;
     @FXML
@@ -38,8 +31,15 @@ public class HomeController {
     private CategoryAxis asseX;
     @FXML
     private VBox containerInit;
-
     private ObservableList<String> mesiNomi = FXCollections.observableArrayList();
+
+    public void setterUtente(Utente t, String nickName) {
+        this.utente = t;
+        this.tempNickName = nickName;
+        if (titlePortfolio != null){
+            titlePortfolio.setText("Portfolio di " + nickName);
+        }
+    }
 
     @FXML
     private void initialize(){
@@ -65,7 +65,7 @@ public class HomeController {
         }
         barChart.getData().add(serie);
     }
-
+        //TODO:esportare controller e l'utente come in notes
     public void goToNotes(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -99,4 +99,5 @@ public class HomeController {
             throw new RuntimeException(e);
         }
     }
+    //TODO: fai btn per graph page;
 }
