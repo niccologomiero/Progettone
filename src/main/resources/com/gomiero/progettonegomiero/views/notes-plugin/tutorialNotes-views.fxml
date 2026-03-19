@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomiero.progettonegomiero.controllers.NotesController">
+   <children>
+      <TextArea prefHeight="157.0" prefWidth="600.0" />
+      <HBox alignment="TOP_CENTER" prefHeight="25.0" prefWidth="535.0" spacing="50.0">
+         <children>
+            <TextField prefHeight="25.0" prefWidth="462.0" promptText="Titolo della Tua prima nota" />
+            <Button mnemonicParsing="false" text="+" />
+         </children></HBox>
+       <TextArea prefHeight="157.0" prefWidth="600.0" />
+      <HBox alignment="TOP_RIGHT">
+         <children>
+            <Button mnemonicParsing="false" text="Save" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
