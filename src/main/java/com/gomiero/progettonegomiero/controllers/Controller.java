@@ -54,7 +54,8 @@ public class Controller {
             Parent root = loader.load();
 
             HomeController homeController = loader.getController();
-            homeController.setterUtente(t,Email.getText());
+            homeController.setterUtente(t);
+            homeController.setTempNickName(Email.getText());
 
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
@@ -73,7 +74,8 @@ public class Controller {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
             Parent root = loader.load();
             HomeController homeController = loader.getController();
-            homeController.setterUtente(new Utente(Email.getText(),Password.getText()),Email.getText());
+            homeController.setterUtente(new Utente(Email.getText(),Password.getText()));
+            homeController.setTempNickName(Email.getText());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

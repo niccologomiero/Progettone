@@ -31,6 +31,10 @@ public class NotesController {
         aggiornaInterfaceNotes();
     }
 
+    public void setTempNickName(String tempNickName) {
+        this.tempNickName = tempNickName;
+    }
+
     private void aggiornaInterfaceNotes() {
         if (this.utente.getNotes().isEmpty()){
             loadPersonalNotes("/com/gomiero/progettonegomiero/views/notes-plugin/tutorialNotes-views.fxml");
@@ -68,7 +72,8 @@ public class NotesController {
             Parent root = loader.load();
 
             HomeController homeController = loader.getController();
-            homeController.setterUtente(utente,tempNickName);
+            homeController.setterUtente(utente);
+            homeController.setTempNickName(tempNickName);
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
 
