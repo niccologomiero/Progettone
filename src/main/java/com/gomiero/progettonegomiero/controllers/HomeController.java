@@ -119,7 +119,7 @@ public class HomeController implements SetterUtente {
          if(sourceBtn == btn_GoLogout){
                 destinazione = "quit";
          }else if (sourceBtn == btn_GoNotes){
-             destinazione = "notes";
+             destinazione = "note";
         } else if (sourceBtn == btn_GoGraph) {
              destinazione = "graph";
          }
@@ -130,7 +130,7 @@ public class HomeController implements SetterUtente {
             if (resource == null){
                 throw new FileNotFoundException("Impossibile trovare il file FXML: " + fxmlPath);
             }
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            FXMLLoader loader = new FXMLLoader(resource);
 
             Parent root = loader.load();
 
@@ -151,14 +151,11 @@ public class HomeController implements SetterUtente {
     }
     private String pathPage(String destinazione){
         String path = switch (destinazione) {
-            case "quit" -> "/com/gomiero/progettonegomiero/views/notes-plugin/login-views.fxml";
-            case "note" -> "/com/gomiero/progettonegomiero/views/notes-plugin/notes-views.fxml";
-            case "graph" -> ""; //todo ancora da indirizzare
-            default -> "";
+            case "quit" -> "/com/gomiero/progettonegomiero/views/login-views.fxml";
+            case "note" -> "/com/gomiero/progettonegomiero/views/notes-views.fxml";
+            case "graph" -> "/com/gomiero/progettonegomiero/views/graph-views.fxml";
+            default -> "/com/gomiero/progettonegomiero/views/home-view.fxml";
         };
-        if (path.isEmpty()){
-            path = "/com/gomiero/progettonegomiero/views/notes-plugin/home-view.fxml";
-        }
         return path;
     }
     //TODO: fai btn per graph page;
