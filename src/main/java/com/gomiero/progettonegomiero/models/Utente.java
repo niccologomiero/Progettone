@@ -27,6 +27,13 @@ public class Utente {
     public ArrayList<Date> getDates(){
         return notesUtente.getDatesNotes();
     }
+    public void setNotesUtente(String title, String nota){
+        notesUtente.setNota(title,nota);
+    }
+    public String showNotes(){
+         return notesUtente.toString();
+    }
+
 
     @Override
     public String toString(){
