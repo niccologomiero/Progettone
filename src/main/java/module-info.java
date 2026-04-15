@@ -1,6 +1,7 @@
 module com.gomiero.progettonegomiero {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.knowm.xchart;
 
 
     opens com.gomiero.progettonegomiero to javafx.fxml;
