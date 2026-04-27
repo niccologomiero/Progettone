@@ -12,10 +12,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Stack;
 
 public class NotesController {
     @FXML
-    private StackPane contenutoNote;
+    private BorderPane contenutoNote;
     @FXML
     private BorderPane containerInit;
 
@@ -57,7 +58,8 @@ public class NotesController {
             }else if(controller instanceof PersonalNotesController){
                 ((PersonalNotesController) controller).setUtente(utente);
             }
-            contenutoNote.getChildren().setAll(node);
+            StackPane wrapper = new StackPane(node);
+            contenutoNote.setCenter(wrapper);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="297.0" prefWidth="603.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomiero.progettonegomiero.controllers.TutorialNotesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="297.0" prefWidth="603.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomiero.progettonegomiero.controllers.TutorialNotesController">
    <children>
-      <TextArea editable="false" prefHeight="65.0" prefWidth="598.0" text="Questa pagina è il tuo spazio personale per catturare idee, promemoria e progetti.&#10;L'interfaccia è divisa in tre sezioni principali per aiutarti a passare dal pensiero all'azione in pochi secondi.&#10;&#10;&#10;&#10;" />
+      <TextArea fx:id="presentazione" editable="false" prefHeight="65.0" prefWidth="598.0" wrapText="true"  text="Questa pagina è il tuo spazio personale per catturare idee, promemoria e progetti.&#10;L'interfaccia è divisa in tre sezioni principali per aiutarti a passare dal pensiero all'azione in pochi secondi.&#10;&#10;&#10;&#10;" />
       <HBox alignment="TOP_CENTER" prefHeight="25.0" prefWidth="535.0" spacing="50.0">
          <children>
             <TextField fx:id="TitoloNote" prefHeight="25.0" prefWidth="462.0" promptText="Titolo della Tua prima nota" />
@@ -18,7 +18,7 @@
       <HBox alignment="TOP_RIGHT">
          <children>
             <Label fx:id="errorLabel" prefHeight="63.0" prefWidth="566.0" />
-            <Button mnemonicParsing="false" onAction="#createFirstnote" text="Save" />
+            <Button mnemonicParsing="false" onAction="#createFirstnote" prefHeight="25.0" prefWidth="54.0" text="Save" />
          </children>
       </HBox>
    </children>

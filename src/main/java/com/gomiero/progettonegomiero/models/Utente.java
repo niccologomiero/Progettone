@@ -21,8 +21,15 @@ public class Utente {
         this.notesUtente = new Note();
     }
 
+
     public ArrayList<String> getNotes(){
         return notesUtente.getPersonalNotes();
+    }
+    public ArrayList<String> getTitoloNotes(){
+    for (String t : notesUtente.getTitlePersonalNotes()){
+
+    }
+    return notesUtente.getPersonalNotes();
     }
     public ArrayList<Date> getDates(){
         return notesUtente.getDatesNotes();

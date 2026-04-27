@@ -9,38 +9,22 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="containerInit" style="-fx-background-color: FCF1BB;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomiero.progettonegomiero.controllers.NotesController">
+<BorderPane fx:id="containerInit" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomiero.progettonegomiero.controllers.NotesController">
     <center>
-        <StackPane fx:id="contenutoNote" prefHeight="697.0" prefWidth="1145.0"  style="-fx-background-color: #f5f5f5;">
-            <padding>
-                <Insets top="20.0" />
-            </padding>
-        </StackPane>
+      <BorderPane fx:id="contenutoNote">
+         <center>
+            <Pane prefHeight="697.0" prefWidth="1080.0" BorderPane.alignment="CENTER" />
+         </center>
+         <top>
+            <Label text="Note di" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Corbel Light" size="32.0" />
+               </font>
+            </Label>
+         </top></BorderPane>
     </center>
-    <top>
-        <Pane prefHeight="47.0" prefWidth="358.0" style="-fx-background-color: #f5f5f5;" BorderPane.alignment="CENTER">
-            <children>
-                <Label fx:id="titlePortfolio" alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" prefHeight="47.0" prefWidth="264.0" style="-fx-font-family: Segoe UI Semibold; -fx-font-size: 18px; -fx-text-fill: #2c3e50;">
-                </Label>
-            <Label layoutX="585.0" layoutY="15.0" text="Label" />
-            </children>
-            <opaqueInsets>
-                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-            </opaqueInsets>
-            <padding>
-                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-            </padding>
-         <effect>
-            <DisplacementMap>
-               <mapData>
-                  <FloatMap />
-               </mapData>
-            </DisplacementMap>
-         </effect>
-        </Pane>
-    </top>
     <left>
-        <VBox alignment="CENTER" prefHeight="697.0" prefWidth="52.0" spacing="12.0" style="-fx-background-color: #e9f2ef; -fx-border-width: 1;">
+        <VBox alignment="CENTER" prefHeight="697.0" prefWidth="52.0" spacing="12.0" style="-fx-background-color: #2e362e;">
             <VBox alignment="CENTER" prefHeight="38.0" prefWidth="36.0">
                 <children>
                     <Button onAction="#ReturnPage" style="-fx-background-color: transparent;">
@@ -59,7 +43,7 @@
                     </Label>
                 </children>
                 <effect>
-                    <DropShadow>
+                    <DropShadow spread="0.5">
                         <color>
                             <Color red="1.0" />
                         </color>
@@ -87,9 +71,9 @@
                     </Label>
                 </children>
                 <effect>
-                    <DropShadow>
+                    <DropShadow spread="0.5">
                         <color>
-                            <Color red="0.28947368264198303" green="0.28947368264198303" blue="0.28947368264198303" />
+                            <Color red="1.0" green="1.0" blue="1.0" />
                         </color>
                     </DropShadow>
                 </effect>
@@ -114,7 +98,10 @@
                         </font></Label>
                 </children>
                 <effect>
-                    <DropShadow />
+                    <DropShadow spread="0.5">
+                  <color>
+                     <Color red="1.0" green="1.0" blue="1.0" />
+                  </color></DropShadow>
                 </effect>
             <cursor>
                <Cursor fx:constant="HAND" />
@@ -123,16 +110,6 @@
             <padding>
                 <Insets bottom="50.0" />
             </padding>
-         <effect>
-            <InnerShadow height="111.86" radius="58.239999999999995" width="123.1">
-               <color>
-                  <Color red="1.0" green="1.0" blue="1.0" />
-               </color>
-               <input>
-                  <DropShadow />
-               </input>
-            </InnerShadow>
-         </effect>
         </VBox>
     </left>
    <effect>

@@ -11,6 +11,7 @@ public class Note {
     public ArrayList<String> getPersonalNotes() {
         return personalNotes;
     }
+    public ArrayList<String> getTitlePersonalNotes(){return titlePersonalNotes;}
 
     public ArrayList<Date> getDatesNotes() {
         return datesNotes;

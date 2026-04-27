@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox prefHeight="416.0" prefWidth="674.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomiero.progettonegomiero.controllers.PersonalNotesController">
-
-
+<VBox prefHeight="266.0" prefWidth="674.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomiero.progettonegomiero.controllers.PersonalNotesController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+             <children>
+                 <HBox alignment="TOP_CENTER" prefHeight="25.0" prefWidth="535.0" spacing="50.0">
+                     <children>
+                         <TextField fx:id="TitoloNote" prefHeight="25.0" prefWidth="462.0" promptText="Titolo della Tua prima nota" />
+                     </children></HBox>
+                 <HBox alignment="CENTER">
+                     <children>
+                         <TextArea fx:id="ContenutoNote" prefHeight="113.0" prefWidth="461.0" />
+                     </children>
+                 </HBox>
+                 <HBox alignment="CENTER">
+                     <children>
+                  <Label opacity="0.61" text="Data" />
+                         <Label fx:id="errorLabel" alignment="CENTER" prefHeight="63.0" prefWidth="444.0" />
+                         <Button mnemonicParsing="false" onAction="#modifyNote" text="Modifica" />
+                     </children>
+                 </HBox>
+             </children>
+         </VBox>
+   </children>
 </VBox>

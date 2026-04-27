@@ -7,9 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-
 import javafx.scene.control.Button;
-
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -18,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 
 
-public class GraphController implements SetterUtente {
+public class FormController implements SetterUtente {
     private Utente utente;
     private String tempNickName;
 
