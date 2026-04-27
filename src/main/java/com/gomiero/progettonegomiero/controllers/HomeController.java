@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.knowm.xchart.QuickChart;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -54,29 +55,13 @@ public class HomeController implements SetterUtente {
         }
     }
 
+
     @FXML
     private void initialize(){
         if (asseX == null || barChart == null) {
             return; // la view non è più attiva, evita il crash
         }
 
-        if (tempNickName != null){
-            titlePortfolio.setStyle("-fx-text-fill: black");
-            titlePortfolio.setText("Portfolio di " + tempNickName);
-        }
-
-        String[] mesi = DateFormatSymbols.getInstance(Locale.ITALY).getMonths();
-        mesiNomi.addAll(Arrays.copyOfRange(mesi,0,12));
-
-        asseX.setCategories(mesiNomi);
-
-        XYChart.Series<String,Integer> serie = new XYChart.Series<>();
-        serie.setName("Mesi dell'anno");
-
-        for (String m : mesiNomi){
-            serie.getData().add(new XYChart.Data<>(m,(int)(Math.random() * 2000)));
-        }
-        barChart.getData().add(serie);
     }
         //FIXME:esportare controller e l'utente come in notes
     public void goToNotes(ActionEvent actionEvent) {

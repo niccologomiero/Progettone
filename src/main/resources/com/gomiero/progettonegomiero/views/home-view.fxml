@@ -113,4 +113,9 @@
          </padding>
         </VBox>
     </left>
+   <bottom>
+       <ImageView fitHeight="345.0" fitWidth="516.0" layoutX="6.0" layoutY="138.0" mouseTransparent="true" BorderPane.alignment="CENTER">
+       <Image url="@../Images/candlestick.png" />
+       </ImageView>
+   </bottom>
 </BorderPane>
