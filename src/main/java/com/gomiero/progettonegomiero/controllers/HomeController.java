@@ -9,20 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.knowm.xchart.QuickChart;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormatSymbols;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Objects;
 
 public class HomeController implements SetterUtente {
     private Utente utente;
@@ -89,7 +83,7 @@ public class HomeController implements SetterUtente {
                     "/com/gomiero/progettonegomiero/views/login-view.fxml"
             ));
             Parent root = loader.load();
-            Controller controller = loader.getController();
+            LoginController controller = loader.getController();
 
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
@@ -119,7 +113,7 @@ public class HomeController implements SetterUtente {
 
             Parent root = loader.load();
 
-            Controller controller = loader.getController();
+            LoginController controller = loader.getController();
 
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);

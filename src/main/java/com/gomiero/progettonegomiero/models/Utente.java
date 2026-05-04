@@ -4,21 +4,31 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Utente {
-    private String email;
+    private String username;
     private String password;
     private Date dataCreazioneUtente = new Date();
     private Note notesUtente;
+    private FormData formData;
 
-    public String getEmail(){
-        return email;
-    }
-    public String getPassword(){
-        return password;
-    }
+
+
     public Utente(String email, String password) {
-        this.email = email;
+        this.username = email;
         this.password = password;
         this.notesUtente = new Note();
+    }
+    public boolean isFormSetted(){
+        if (formData != null){
+            return true;
+        }
+        return false;
+    }
+    public String getUsername(){
+        return username;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
 
@@ -34,6 +44,7 @@ public class Utente {
     public ArrayList<Date> getDates(){
         return notesUtente.getDatesNotes();
     }
+
     public void setNotesUtente(String title, String nota){
         notesUtente.setNota(title,nota);
     }
@@ -44,7 +55,7 @@ public class Utente {
 
     @Override
     public String toString(){
-        return email + " " + password + " " + dataCreazioneUtente;
+        return username + " " + password + " " + dataCreazioneUtente;
     }
 
 

@@ -67,7 +67,7 @@ public class GraphController implements SetterUtente {
                     "/com/gomiero/progettonegomiero/views/login-view.fxml"
             ));
             Parent root = loader.load();
-            Controller controller = loader.getController();
+            LoginController controller = loader.getController();
 
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
@@ -97,7 +97,7 @@ public class GraphController implements SetterUtente {
 
             Parent root = loader.load();
 
-            Controller controller = loader.getController();
+            LoginController controller = loader.getController();
 
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);

@@ -8,105 +8,90 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="697.0" prefWidth="952.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomiero.progettonegomiero.controllers.FormController">
+<BorderPane fx:id="containerInit" prefHeight="697.0" prefWidth="952.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomiero.progettonegomiero.controllers.FormController">
     <center>
         <VBox alignment="CENTER">
             <children>
                 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="245.0" prefWidth="240.0" spacing="15.0">
-                    <StackPane>
+                    <StackPane prefHeight="400.0" prefWidth="350.0">
                         <children>
-                            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+                            <!-- Step 0 -->
+                            <VBox fx:id="step0" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="294.0" spacing="50.0" visible="true">
+                        <children>
+                           <Label text="Benvenuto" />
+                           <Label />
+                           <TextArea prefHeight="462.0" prefWidth="234.0" text="Salve,ti chiediamo di rispondere a tutte le domande al fine di poter completare il suo profilo" />
+                        </children>
+                            </VBox>
+                            <!-- Step 1 -->
+                            <VBox fx:id="step1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" spacing="15.0" visible="false">
                                 <children>
-                                    <VBox fx:id="step1" alignment="CENTER" managed="true" maxHeight="-Infinity" maxWidth="-Infinity" spacing="15.0" visible="true">
-                                        <children>
-                                            <Label style="-fx-font-weight: bold;" text="1. Informazioni di base" />
-                                            <Label text="Età:" />
-                                            <Spinner fx:id="eta" editable="true" prefWidth="100.0" />
-                                            <Label text="Lavoro:" />
-                                            <TextArea fx:id="lavoro" prefHeight="50.0" prefWidth="250.0" promptText="Professione..." />
-                                            <Label text="Entrate (€):" />
-                                            <Spinner fx:id="entrate" editable="true" prefWidth="100.0" />
-                                            <CheckBox text="Stabili?" />
-                                        </children>
-                                    </VBox>
+                                    <Label style="-fx-font-weight: bold;" text="1. Informazioni di base" />
+                                    <Label text="Età:" />
+                                    <Spinner fx:id="eta" editable="true" prefWidth="100.0">
+                                        <valueFactory>
+                                            <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="30" max="100" min="18" />
+                                        </valueFactory>
+                                    </Spinner>
+                                    <Label text="Lavoro:" />
+                                    <TextArea fx:id="lavoro" prefHeight="50.0" prefWidth="250.0" promptText="Professione..." />
+                                    <Label text="Entrate (€):" />
+                                    <Spinner fx:id="entrate" editable="true" prefWidth="100.0">
+                                        <valueFactory>
+                                            <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="50" initialValue="30" max="10000" min="0" />
+                                        </valueFactory>
+                                    </Spinner>
+                                    <CheckBox text="Stabili?" />
+                                </children>
+                                <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                </padding>
+                            </VBox>
 
-                                    <VBox fx:id="step2" alignment="CENTER" managed="false" maxHeight="-Infinity" maxWidth="-Infinity" spacing="15.0" visible="false">
-                                        <children>
-                                            <Label style="-fx-font-weight: bold;" text="2. Spese" />
-                                            <Label text="Uscite mensili (€):" />
-                                            <Spinner fx:id="speseTotali" editable="true" prefWidth="100.0" />
-                                            <Label text="Dettaglio spese:" />
-                                            <TextArea fx:id="splitSpese" prefHeight="50.0" prefWidth="250.0" promptText="Affitto, cibo, svago..." />
-                                            <CheckBox text="Tracci già le spese?" />
-                                        </children>
-                                    </VBox>
+                            <!-- Step 2 -->
+                            <VBox fx:id="step2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" spacing="15.0" visible="false">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" text="2. Spese" />
+                                    <Label text="Uscite mensili (€):" />
+                                    <Spinner fx:id="speseTotali" editable="true" prefWidth="100.0">
+                                        <valueFactory>
+                                            <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="50" initialValue="500" max="10000" min="0" />
+                                        </valueFactory>
+                                    </Spinner>
+                                    <CheckBox text="Tracci già le spese?" />
+                                </children>
+                                <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                </padding>
+                            </VBox>
 
-                                    <VBox fx:id="step3" alignment="CENTER" managed="false" maxHeight="-Infinity" maxWidth="-Infinity" spacing="15.0" visible="false">
+                            <!-- Step 3 -->
+                            <VBox fx:id="step3" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" spacing="15.0" visible="false">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" text="3. Obiettivi" />
+                                    <Label text="Target Risparmio (€):" />
+                                    <Spinner fx:id="goalMoney" editable="true" prefWidth="100.0">
+                                        <valueFactory>
+                                            <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="100" initialValue="0" max="10000" min="0" />
+                                        </valueFactory>
+                                    </Spinner>
+                                    <Label text="Orizzonte (Anni):" />
+                                    <Spinner fx:id="goalTime" editable="true" prefWidth="100.0">
+                                        <valueFactory>
+                                            <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="5" max="50" min="0" />
+                                        </valueFactory>
+                                    </Spinner>
+                                    <Label text="Scopi e target:" />
+                                    <VBox spacing="5.0">
                                         <children>
-                                            <Label style="-fx-font-weight: bold;" text="3. Obiettivi" />
-                                            <Label text="Target Risparmio (€):" />
-                                            <Spinner fx:id="goalMoney" editable="true" prefWidth="100.0" />
-                                            <Label text="Orizzonte (Anni):" />
-                                            <Spinner fx:id="goalTime" editable="true" prefWidth="100.0" />
-                                            <Label text="Scopo:" />
-                                            <VBox spacing="5.0">
-                                                <children>
-                                                    <CheckBox text="Emergenza" />
-                                                    <CheckBox text="Acquisto Casa/Auto" />
-                                                    <CheckBox text="Viaggi" />
-                                                    <CheckBox text="Investire" />
-                                                </children>
-                                            </VBox>
-                                        </children>
-                                    </VBox>
-
-                                    <VBox fx:id="step4" alignment="CENTER" managed="false" maxHeight="-Infinity" maxWidth="-Infinity" spacing="15.0" visible="false">
-                                        <children>
-                                            <Label style="-fx-font-weight: bold;" text="4. Situazione attuale" />
-                                            <Label text="Risparmi accumulati (€):" />
-                                            <Spinner fx:id="risparmi" editable="true" prefWidth="100.0" />
-                                            <CheckBox text="Hai debiti attivi?" />
-                                            <TextArea fx:id="debitiDettaglio" prefHeight="50.0" prefWidth="250.0" promptText="Rata mensile o totale..." />
-                                            <CheckBox text="Hai già un fondo emergenza?" />
-                                        </children>
-                                    </VBox>
-
-                                    <VBox fx:id="step5" alignment="CENTER" managed="false" maxHeight="-Infinity" maxWidth="-Infinity" spacing="15.0" visible="false">
-                                        <children>
-                                            <Label style="-fx-font-weight: bold;" text="5. Comportamento" />
-                                            <Label text="Difficoltà a risparmiare:" />
-                                            <HBox alignment="CENTER" spacing="10.0">
-                                                <children>
-                                                    <CheckBox text="Facile" />
-                                                    <CheckBox text="Medio" />
-                                                    <CheckBox text="Difficile" />
-                                                </children>
-                                            </HBox>
-                                            <Label text="Cosa ti spinge a spendere?" />
-                                            <TextArea fx:id="trigger" prefHeight="50.0" prefWidth="250.0" promptText="Impulso, noia..." />
-                                            <CheckBox text="Sei costante?" />
-                                        </children>
-                                    </VBox>
-
-                                    <VBox fx:id="step6" alignment="CENTER" managed="false" maxHeight="-Infinity" maxWidth="-Infinity" spacing="15.0" visible="false">
-                                        <children>
-                                            <Label style="-fx-font-weight: bold;" text="6. Rischio e Profilo" />
-                                            <Label text="Reazione a perdita -10%:" />
-                                            <HBox alignment="CENTER" spacing="5.0">
-                                                <children>
-                                                    <CheckBox text="Vendo" />
-                                                    <CheckBox text="Aspetto" />
-                                                    <CheckBox text="Investo+" />
-                                                </children>
-                                            </HBox>
-                                            <Label text="Profilo desiderato:" />
-                                            <VBox spacing="5.0">
-                                                <children>
-                                                    <CheckBox text="Sicuro (Capitale protetto)" />
-                                                    <CheckBox text="Equilibrato" />
-                                                    <CheckBox text="Crescita (Aggressivo)" />
-                                                </children>
-                                            </VBox>
+                                            <CheckBox fx:id="isfondoEmergenza" text="Emergenza" />
+                                            <TextArea fx:id="fondoEmergenza" prefHeight="50.0" prefWidth="250.0" />
+                                            <CheckBox fx:id="isfondoAuto_casa" text="Acquisto Casa/Auto" />
+                                            <TextArea fx:id="fondoAuto_casa" prefHeight="50.0" prefWidth="250.0" />
+                                            <CheckBox fx:id="isFondoViaggi" text="Viaggi" />
+                                            <TextArea fx:id="fondoViaggi" prefHeight="50.0" prefWidth="250.0" />
+                                            <CheckBox fx:id="isfondoInvestire" text="Investire" />
+                                            <TextArea fx:id="fondoInvestire" prefHeight="50.0" prefWidth="250.0" />
                                         </children>
                                     </VBox>
                                 </children>
@@ -114,11 +99,45 @@
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                 </padding>
                             </VBox>
+
+                            <!-- Step 4 -->
+                            <VBox fx:id="step4" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" spacing="15.0" visible="false">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" text="4. Situazione attuale" />
+                                    <Label text="Risparmi accumulati (€):" />
+                                    <Spinner fx:id="risparmi" editable="true" prefWidth="100.0" />
+                                    <CheckBox text="Hai debiti attivi?" />
+                                    <TextArea fx:id="debitiDettaglio" prefHeight="50.0" prefWidth="250.0" promptText="Rata mensile o totale..." />
+                                </children>
+                                <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                </padding>
+                            </VBox>
+
+                            <!-- Step 5 -->
+                            <VBox fx:id="step5" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" spacing="15.0" visible="false">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" text="5. Comportamento" />
+                                    <Label text="Difficoltà a risparmiare:" />
+                                    <HBox alignment="CENTER" spacing="10.0">
+                                        <children>
+                                            <CheckBox text="Facile" />
+                                            <CheckBox text="Medio" />
+                                            <CheckBox text="Difficile" />
+                                        </children>
+                                    </HBox>
+                                    <CheckBox text="Sei costante?" />
+                                </children>
+                                <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                </padding>
+                            </VBox>
                         </children>
                     </StackPane>
-                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="180.0">
+
+                    <HBox alignment="CENTER" prefHeight="28.0" prefWidth="441.0" spacing="50.0">
                         <children>
-                            <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="10.0" prefWidth="0.0" style="-fx-background-color: trasparent;">
+                            <Button fx:id="btn_before_step" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onChangeStep" prefHeight="10.0" prefWidth="0.0" style="-fx-background-color: transparent;">
                                 <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="6.0" layoutY="138.0" mouseTransparent="true">
                                         <image>
@@ -127,7 +146,8 @@
                                     </ImageView>
                                 </graphic>
                             </Button>
-                            <Button maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="10.0" prefWidth="0.0" style="-fx-background-color: trasparent;">
+                            <Button managed="false" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" text="Button" visible="false" />
+                            <Button fx:id="btn_next_Step" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onChangeStep" prefHeight="10.0" prefWidth="0.0" style="-fx-background-color: transparent;">
                                 <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="6.0" layoutY="138.0" mouseTransparent="true">
                                         <image>
@@ -139,6 +159,7 @@
                         </children>
                     </HBox>
                 </VBox>
+                <Label fx:id="showErrors" />
             </children>
         </VBox>
     </center>
@@ -146,7 +167,7 @@
         <VBox alignment="CENTER" prefHeight="697.0" prefWidth="52.0" spacing="12.0" style="-fx-background-color: #2e362e;">
             <VBox alignment="CENTER" prefHeight="38.0" prefWidth="36.0">
                 <children>
-                    <Button fx:id="btn_GoLogout" onAction="#ReturnPage" style="-fx-background-color: trasaparent;">
+                    <Button fx:id="btn_GoLogout" onAction="#ReturnPage" style="-fx-background-color: transparent;">
                         <graphic>
                             <ImageView fitHeight="25.0" fitWidth="20.0" layoutX="6.0" layoutY="138.0" mouseTransparent="true">
                                 <image>

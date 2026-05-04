@@ -7,10 +7,12 @@ public class FormData {
     private float speseTotali;
     private float goalMoney;
     private float goalTime;
-    private boolean isFondoEmergenza;
-    private boolean isFondoAuto_Casa;
-    private boolean isFondoViaggi;
-    private boolean isFondoInvestire;
+    private float fondoEmergenza;
+    private float fondoAuto_Casa;
+    private float fondoViaggi;
+    private float fondoInvestire;
+    private float risparmiPregressi;
+    private float debitiPregressiTotali;
 
     public int getEta() {
         return eta;
@@ -60,35 +62,51 @@ public class FormData {
         this.goalTime = goalTime;
     }
 
-    public boolean isFondoEmergenza() {
-        return isFondoEmergenza;
+    public float getFondoEmergenza() {
+        return fondoEmergenza;
     }
 
-    public void setFondoEmergenza(boolean fondoEmergenza) {
-        isFondoEmergenza = fondoEmergenza;
+    public void setFondoEmergenza(float fondoEmergenza) {
+        this.fondoEmergenza = fondoEmergenza;
     }
 
-    public boolean isFondoAuto_Casa() {
-        return isFondoAuto_Casa;
+    public float getFondoAuto_Casa() {
+        return fondoAuto_Casa;
     }
 
-    public void setFondoAuto_Casa(boolean fondoAuto_Casa) {
-        isFondoAuto_Casa = fondoAuto_Casa;
+    public void setFondoAuto_Casa(float fondoAuto_Casa) {
+        this.fondoAuto_Casa = fondoAuto_Casa;
     }
 
-    public boolean isFondoViaggi() {
-        return isFondoViaggi;
+    public float getFondoViaggi() {
+        return fondoViaggi;
     }
 
-    public void setFondoViaggi(boolean fondoViaggi) {
-        isFondoViaggi = fondoViaggi;
+    public void setFondoViaggi(float fondoViaggi) {
+        this.fondoViaggi = fondoViaggi;
     }
 
-    public boolean isFondoInvestire() {
-        return isFondoInvestire;
+    public float getFondoInvestire() {
+        return fondoInvestire;
     }
 
-    public void setFondoInvestire(boolean fondoInvestire) {
-        isFondoInvestire = fondoInvestire;
+    public void setFondoInvestire(float fondoInvestire) {
+        this.fondoInvestire = fondoInvestire;
+    }
+
+    public float getRisparmiPregressi() {
+        return risparmiPregressi;
+    }
+
+    public void setRisparmiPregressi(float risparmiPregressi) {
+        this.risparmiPregressi = risparmiPregressi;
+    }
+
+    public float getDebitiPregressiTotali() {
+        return debitiPregressiTotali;
+    }
+
+    public void setDebitiPregressiTotali(float debitiPregressiTotali) {
+        this.debitiPregressiTotali = debitiPregressiTotali;
     }
 }
