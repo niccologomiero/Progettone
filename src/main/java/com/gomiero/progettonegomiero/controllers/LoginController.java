@@ -16,14 +16,14 @@ import java.io.IOException;
 
 public class LoginController {
     private DataBase dataBase;
-
+    private Utente utente;
     @FXML
     public void initialize(){
         dataBase = new DataBase();
     }
 
-    public void setUtenti(DataBase t) {
-        this.dataBase = t;
+    public void setUtenti(DataBase dataBase) {
+        this.dataBase = dataBase;
     }
 
     @FXML
@@ -37,24 +37,22 @@ public class LoginController {
 
     @FXML
     protected void onSingInButton(ActionEvent actionEvent) {
-        Utente t;
-        int result = dataBase.EsisteUtente(usernameField.getText());
-        if (result == 0 ){
-            t = new Utente(usernameField.getText(), passwordField.getText());
-//            utenti.addUtente(t);
+        if (dataBase.isUsernameDisponibile(usernameField.getText())){
+            utente = new Utente(usernameField.getText(), passwordField.getText());
+            dataBase.registraUtente(utente);
+            dataBase.setUtenteLogged(utente);
         }
         else {
             ShowError.setText("Utente già esistente");
             return;
         }
-       changeScenario(t);
+       changeScenario();
     }
 
     public void onLogInButton(ActionEvent actionEvent) {
-        int result = dataBase.ControlloUtente(usernameField.getText(), passwordField.getText());
+        int result = dataBase.controlloUtente(usernameField.getText(), passwordField.getText());
         if (result == 0 ){
             ShowError.setText("Utente trovato");
-            
         }
         if (result == 1){
             ShowError.setText("passwordField sbagliata");
@@ -62,10 +60,12 @@ public class LoginController {
         if (result == 2){
             ShowError.setText("Utente non trovato");
         }
-        Utente utente = dataBase.getUtente(usernameField.getText());
-        changeScenario(utente);
+        utente = dataBase.getUtente(usernameField.getText());
+        dataBase.setUtenteLogged(utente);
     }
-    public void changeScenario(Utente utente) {
+    //deprecato da gestire meglio il passaggio degli utenti
+    public void changeScenario() {
+
         if (utente.isFormSetted()){
            try {
                FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -74,7 +74,6 @@ public class LoginController {
                Parent root = loader.load();
 
                HomeController homeController = loader.getController();
-               homeController.setterUtente(utente);
 
                Stage stage = (Stage) containerInit.getScene().getWindow();
                stage.getScene().setRoot(root);

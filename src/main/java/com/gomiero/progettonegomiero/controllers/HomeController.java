@@ -1,5 +1,7 @@
 package com.gomiero.progettonegomiero.controllers;
 
+import com.gomiero.progettonegomiero.Application;
+import com.gomiero.progettonegomiero.models.DataBase;
 import com.gomiero.progettonegomiero.models.Utente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,12 +20,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
-public class HomeController implements SetterUtente {
+/**
+ * Controller per la vista Home (Dashboard).
+ * Gestisce la visualizzazione del portfolio dell'utente e la navigazione verso altre sezioni.
+ */
+public class HomeController implements GetData {
+    // Riferimento all'oggetto utente (dati persistenti)
+    private DataBase dataBase;
+    // Riferimento all'oggetto utente (dati persistenti)
     private Utente utente;
-    private String tempNickName;
+    // Variabile temporanea per il nickname (se non ancora salvato nell'oggetto utente)
+    private String username;
 
+    // --- Elementi UI iniettati dal file FXML ---
     @FXML
-    private Label titlePortfolio;
+    private Label titlePortfolio; // Etichetta del titolo (es. "Portfolio di Mario")
     @FXML
     public Button btn_GoLogout;
     @FXML
@@ -31,33 +42,48 @@ public class HomeController implements SetterUtente {
     @FXML
     public Button btn_GoNotes;
     @FXML
-    private BarChart<String,Integer> barChart;
+    private BarChart<String,Integer> barChart; // Grafico a barre (da implementare)
     @FXML
-    private CategoryAxis asseX;
+    private CategoryAxis asseX;                // Asse delle categorie del grafico
     @FXML
-    private VBox containerInit;
-    private final ObservableList<String> mesiNomi = FXCollections.observableArrayList();
+    private VBox containerInit;                // Nodo radice della vista per ottenere la finestra (Stage)
 
-    public void setterUtente(Utente t) {
-        this.utente = t;
 
+    /**
+     * Inizializza l'utente corrente nel controller.
+     */
+    @Override
+    public void getData() {
+        this.dataBase = DataBase.getInstance();
+        this.utente = dataBase.getUtenteLogged();
+        if (utente != null){
+            //TODO dare benvenuto all'utente
+        }
     }
-    public void setTempNickName(String nickName){
-        this.tempNickName = nickName;
+
+    /**
+     * Imposta il nickname e aggiorna l'interfaccia grafica.
+     * @param nickName il nome da visualizzare nel titolo.
+     */
+    public void setUsername(String nickName){
+        this.username = utente.getUsername();
         if (titlePortfolio != null){
             titlePortfolio.setText("Portfolio di " + nickName);
         }
     }
 
-
+    /**
+     * Metodo chiamato automaticamente al caricamento del file FXML.
+     */
     @FXML
     private void initialize(){
-        if (asseX == null || barChart == null) {
-            return; // la view non è più attiva, evita il crash
-        }
-
+       getData();
     }
-        //FIXME:esportare controller e l'utente come in notes
+
+    /**
+     * Naviga verso la vista delle Note.
+     * Passa l'oggetto utente al NotesController per mantenere la sessione.
+     */
     public void goToNotes(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -65,9 +91,10 @@ public class HomeController implements SetterUtente {
             ));
             Parent root = loader.load();
 
-            NotesController notesController = loader.getController();
-            notesController.setterUtente(utente,tempNickName);
+//            Recupera il controller della nuova pagina e inietta i dati
+//            NotesController notesController = loader.getController();
 
+            // Cambia la radice della scena corrente (root)
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
 
@@ -75,67 +102,76 @@ public class HomeController implements SetterUtente {
             throw new RuntimeException(e);
         }
     }
-    //deprecated: questi metodi avranno un unico
-    // metodo che riconosce che tipo di btn è cliccato
+
+    /**
+     * (Deprecato) Torna alla pagina di Login.
+     * Sostituito dalla logica dinamica del metodo changePage.
+     */
     public void ReturnPage(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/com/gomiero/progettonegomiero/views/login-view.fxml"
             ));
             Parent root = loader.load();
-            LoginController controller = loader.getController();
-
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Metodo unificato per gestire il cambio di pagina.
+     * Identifica il pulsante cliccato e carica il file FXML corrispondente.
+     */
     public void changePage(ActionEvent actionEvent){
         Object sourceBtn = actionEvent.getSource();
         String destinazione = "";
-         if(sourceBtn == btn_GoLogout){
-                destinazione = "quit";
-         }else if (sourceBtn == btn_GoNotes){
-             destinazione = "note";
-        } else if (sourceBtn == btn_GoGraph) {
-             destinazione = "graph";
-         }
 
+        // Identifica la destinazione in base al pulsante premuto
+        if(sourceBtn == btn_GoLogout){
+            destinazione = "quit";
+        } else if (sourceBtn == btn_GoNotes){
+            destinazione = "note";
+        } else if (sourceBtn == btn_GoGraph) {
+            destinazione = "graph";
+        }
+
+        // Ottiene il percorso del file FXML
         String fxmlPath = pathPage(destinazione);
-        try{
+
+        try {
             URL resource = getClass().getResource(fxmlPath);
             if (resource == null){
                 throw new FileNotFoundException("Impossibile trovare il file FXML: " + fxmlPath);
             }
-            FXMLLoader loader = new FXMLLoader(resource);
 
+            FXMLLoader loader = new FXMLLoader(resource);
             Parent root = loader.load();
 
-            LoginController controller = loader.getController();
-
+            // Ottiene lo Stage corrente
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
 
-            if (controller instanceof SetterUtente) ((SetterUtente) controller).setterUtente(utente);
-
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch (Exception e){
-            System.err.println("Errore critico durante il cambio pagina" + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Errore critico durante il cambio pagina: " + e.getMessage());
             e.printStackTrace();
         }
-
     }
+
+    /**
+     * Mappa una stringa di destinazione al percorso fisico del file FXML.
+     * @param destinazione stringa identificativa.
+     * @return il percorso della risorsa FXML.
+     */
     private String pathPage(String destinazione){
-        String path = switch (destinazione) {
+        return switch (destinazione) {
             case "quit" -> "/com/gomiero/progettonegomiero/views/login-views.fxml";
             case "note" -> "/com/gomiero/progettonegomiero/views/notes-views.fxml";
             case "graph" -> "/com/gomiero/progettonegomiero/views/graph-views.fxml";
             default -> "/com/gomiero/progettonegomiero/views/home-view.fxml";
         };
-        return path;
     }
-    //TODO: fai btn per graph page;
 }

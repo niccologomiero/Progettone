@@ -1,18 +1,53 @@
 package com.gomiero.progettonegomiero.models;
 
+/**
+ * Classe Modello che rappresenta i dati finanziari e personali raccolti tramite il form.
+ * Viene utilizzata per trasportare le informazioni tra i vari controller e memorizzarle nell'utente.
+ */
 public class FormData {
+
+    // --- Campi Anagrafici e Professionali ---
     private int eta;
     private String lavoro;
+
+    // --- Campi Economici Mensili ---
     private float entrate;
     private float speseTotali;
-    private float goalMoney;
-    private float goalTime;
-    private float fondoEmergenza;
-    private float fondoAuto_Casa;
-    private float fondoViaggi;
-    private float fondoInvestire;
-    private float risparmiPregressi;
-    private float debitiPregressiTotali;
+
+    // --- Obiettivi Finanziari ---
+    private float goalMoney; // Cifra che si desidera raggiungere
+    private float goalTime;  // Arco temporale previsto (es. mesi o anni)
+
+    // --- Opzioni e Preferenze (Flags) ---
+    private boolean isFondoEmergenza;
+    private boolean isFondoMutuo;
+    private boolean isFondoViaggi;
+    private boolean fondoInvestire;
+
+    // --- Stato Patrimoniale Pregresso ---
+    private float risparmiPregressi;       // Soldi già messi da parte
+    private float debitiPregressiTotali;   // Totale dei debiti esistenti
+
+    /**
+     * Costruttore completo per inizializzare tutti i parametri del form in un'unica soluzione.
+     */
+    public FormData(int eta, String lavoro, float entrate, float speseTotali, float goalMoney, float goalTime, boolean isFondoEmergenza, boolean isFondoMutuo, boolean isFondoViaggi, boolean fondoInvestire, float risparmiPregressi, float debitiPregressiTotali) {
+        this.eta = eta;
+        this.lavoro = lavoro;
+        this.entrate = entrate;
+        this.speseTotali = speseTotali;
+        this.goalMoney = goalMoney;
+        this.goalTime = goalTime;
+        this.isFondoEmergenza = isFondoEmergenza;
+        this.isFondoMutuo = isFondoMutuo;
+        this.isFondoViaggi = isFondoViaggi;
+        this.fondoInvestire = fondoInvestire;
+        this.risparmiPregressi = risparmiPregressi;
+        this.debitiPregressiTotali = debitiPregressiTotali;
+    }
+
+    // --- Metodi Getter e Setter ---
+    // Consentono l'accesso controllato e la modifica delle variabili private (Incapsulamento)
 
     public int getEta() {
         return eta;
@@ -62,35 +97,35 @@ public class FormData {
         this.goalTime = goalTime;
     }
 
-    public float getFondoEmergenza() {
-        return fondoEmergenza;
+    public boolean isFondoEmergenza() {
+        return isFondoEmergenza;
     }
 
-    public void setFondoEmergenza(float fondoEmergenza) {
-        this.fondoEmergenza = fondoEmergenza;
+    public void setFondoEmergenza(boolean fondoEmergenza) {
+        isFondoEmergenza = fondoEmergenza;
     }
 
-    public float getFondoAuto_Casa() {
-        return fondoAuto_Casa;
+    public boolean isFondoMutuo() {
+        return isFondoMutuo;
     }
 
-    public void setFondoAuto_Casa(float fondoAuto_Casa) {
-        this.fondoAuto_Casa = fondoAuto_Casa;
+    public void setFondoMutuo(boolean fondoMutuo) {
+        isFondoMutuo = fondoMutuo;
     }
 
-    public float getFondoViaggi() {
-        return fondoViaggi;
+    public boolean isFondoViaggi() {
+        return isFondoViaggi;
     }
 
-    public void setFondoViaggi(float fondoViaggi) {
-        this.fondoViaggi = fondoViaggi;
+    public void setFondoViaggi(boolean fondoViaggi) {
+        isFondoViaggi = fondoViaggi;
     }
 
-    public float getFondoInvestire() {
+    public boolean isFondoInvestire() {
         return fondoInvestire;
     }
 
-    public void setFondoInvestire(float fondoInvestire) {
+    public void setFondoInvestire(boolean fondoInvestire) {
         this.fondoInvestire = fondoInvestire;
     }
 

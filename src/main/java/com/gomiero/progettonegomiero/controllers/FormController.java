@@ -1,8 +1,8 @@
 package com.gomiero.progettonegomiero.controllers;
 
+import com.gomiero.progettonegomiero.models.FormData;
 import com.gomiero.progettonegomiero.models.FormValidator;
 import com.gomiero.progettonegomiero.models.Utente;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,11 +16,17 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+/**
+ * Controller per la gestione del form multi-step.
+ * Gestisce l'inserimento dei dati utente, la validazione per ogni step e il salvataggio finale.
+ */
 public class FormController implements SetterUtente {
 
+    // Riferimento all'utente corrente
     private Utente utente;
+    // Lista che contiene i contenitori verticali (step) del form
     private ArrayList<VBox> containerVbox;
+    // Indice dello step attualmente visualizzato
     private int currentStep = 0;
 
     @FXML
@@ -35,18 +41,12 @@ public class FormController implements SetterUtente {
     public Button btn_before_step;
     @FXML
     public Button btn_next_Step;
-    @FXML
-    public VBox step1;
-    @FXML
-    public VBox step2;
-    @FXML
-    public VBox step3;
-    @FXML
-    public VBox step4;
-    @FXML
-    public VBox step5;
 
-    // --- Step 1 ---
+    // Riferimenti ai vari step definiti nel file FXML
+    @FXML
+    public VBox step1, step2, step3, step4, step5;
+
+    // --- Elementi Step 1: Dati Personali ---
     @FXML
     private Spinner<Integer> eta;
     @FXML
@@ -54,147 +54,172 @@ public class FormController implements SetterUtente {
     @FXML
     private Spinner<Integer> entrate;
 
-    // --- Step 2 ---
+    // --- Elementi Step 2: Spese ---
     @FXML
     private Spinner<Integer> speseTotali;
 
-    // --- Step 3 ---
+    // --- Elementi Step 3: Obiettivi ---
     @FXML
     private Spinner<Integer> goalMoney;
     @FXML
     private Spinner<Integer> goalTime;
     @FXML
-    private CheckBox isfondoEmergenza;
-    @FXML
-    private TextArea fondoEmergenza;
-    @FXML
-    private CheckBox isfondoAuto_casa;
-    @FXML
-    private TextArea fondoAuto_casa;
-    @FXML
-    private CheckBox isFondoViaggi;
-    @FXML
-    private TextArea fondoViaggi;
-    @FXML
-    private CheckBox isfondoInvestire;
-    @FXML
-    private TextArea fondoInvestire;
+    private CheckBox isfondoEmergenza, isfondoAuto_casa, isFondoViaggi, isfondoInvestire;
 
-    // --- Step 4 ---
+    // --- Elementi Step 4: Risparmi e Debiti ---
     @FXML
     private Spinner<Integer> risparmi;
     @FXML
-    private TextArea debitiDettaglio;
+    private Spinner<Integer> debitiDettaglio;
 
+    /**
+     * Implementazione dell'interfaccia SetterUtente per ricevere l'oggetto Utente
+     * da altri controller (es. dal Login).
+     */
+    @Override
     public void setterUtente(Utente t) {
         this.utente = t;
     }
 
+    /**
+     * Metodo di inizializzazione di JavaFX. Configura la struttura a step.
+     */
     @FXML
     public void initialize(){
-        Platform.runLater(() -> {
-            containerVbox = new ArrayList<>();
-            containerVbox.add(step1);
-            containerVbox.add(step2);
-            containerVbox.add(step3);
-            containerVbox.add(step4);
-            containerVbox.add(step5);
+        // Raggruppa gli step in una lista per gestirli ciclicamente
+        containerVbox = new ArrayList<>();
+        containerVbox.add(step1);
+        containerVbox.add(step2);
+        containerVbox.add(step3);
+        containerVbox.add(step4);
+        containerVbox.add(step5);
 
-            // Mostra solo il primo step
-            for (int i = 1; i < containerVbox.size(); i++) {
-                containerVbox.get(i).setVisible(false);
-            }
-            updateButtonStates();
-            clearErrors();
-        });
+        // Nasconde tutti gli step tranne il primo (indice 0)
+        for (int i = 1; i < containerVbox.size(); i++) {
+            containerVbox.get(i).setVisible(false);
+        }
+
+        updateButtonStates(); // Configura i tasti Avanti/Indietro
+        clearErrors();        // Pulisce eventuali messaggi residui
     }
 
+    /**
+     * Ritorna alla pagina di Login.
+     */
     public void ReturnPage(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/com/gomiero/progettonegomiero/views/login-view.fxml"
             ));
             Parent root = loader.load();
-            LoginController controller = loader.getController();
 
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Naviga verso la Home Page dopo aver completato il form.
+     */
+    public void toHomePage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/com/gomiero/progettonegomiero/views/home-view.fxml"
+            ));
+            Parent root = loader.load();
+            HomeController controller = loader.getController();
+
+            // Passa l'utente aggiornato al controller della Home
+            if (controller != null) ((SetterUtente) controller).setterUtente(utente);
+
+            Stage stage = (Stage) containerInit.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Handler per il pulsante di salvataggio finale.
+     */
+    public void onSave(ActionEvent actionEvent){
+        saveFormData();
+    }
+
+    /**
+     * Gestisce la navigazione tra gli step (Avanti e Indietro).
+     * Include la logica di validazione prima di procedere allo step successivo.
+     */
     public void onChangeStep(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
 
+        // Logica per tornare indietro
         if (source.getId().equals(btn_before_step.getId()) && currentStep > 0) {
-            // Torna indietro senza validazione
             showStep(currentStep - 1);
-        } else if (source.getId().equals(btn_next_Step.getId()) && currentStep < containerVbox.size() - 1) {
-            // Valida lo step attuale prima di procedere
+        }
+        // Logica per andare avanti
+        else if (source.getId().equals(btn_next_Step.getId()) && currentStep < containerVbox.size() - 1 ) {
+            // Valida i dati dello step corrente prima di permettere il passaggio al successivo
             FormValidator.ValidationResult validationResult = validateCurrentStep(currentStep);
 
             if (validationResult.isValid()) {
-                // Se valido, vai al prossimo step
                 showStep(currentStep + 1);
             } else {
-                // Se non valido, mostra gli errori
+                // Se i dati sono errati, mostra l'errore e blocca l'utente
                 showError(validationResult.getErrors());
             }
         }
     }
 
-    private int findCurrentStep() {
-        for (int i = 0; i < containerVbox.size(); i++) {
-            if (containerVbox.get(i).isVisible()) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
+    /**
+     * Gestisce la visibilità delle VBox degli step.
+     * @param stepIndex L'indice dello step da mostrare.
+     */
     private void showStep(int stepIndex) {
-        // Nascondi tutti
+        // Nasconde tutti gli step
         for (VBox step : containerVbox) {
             step.setVisible(false);
         }
 
-        // Mostra solo lo step corrente
+        // Mostra lo step richiesto e aggiorna l'indice corrente
         containerVbox.get(stepIndex).setVisible(true);
         currentStep = stepIndex;
 
-        // Aggiorna i bottoni
-        updateButtonStates();
+        // Se siamo all'ultimo step, mostra il tasto per salvare i dati
+        if (stepIndex == containerVbox.size() - 1){
+            btn_SaveData.setVisible(true);
+        }
 
-        // Pulisci gli errori quando cambi step
+        updateButtonStates();
         clearErrors();
     }
 
+    /**
+     * Attiva o disattiva i pulsanti di navigazione in base alla posizione attuale.
+     */
     private void updateButtonStates() {
-        btn_before_step.setDisable(currentStep == 0);
-        btn_next_Step.setDisable(currentStep == containerVbox.size() - 1);
+        btn_before_step.setDisable(currentStep == 0); // Disabilita "Indietro" al primo step
+        btn_next_Step.setDisable(currentStep == containerVbox.size() - 1); // Disabilita "Avanti" all'ultimo
     }
 
+    /**
+     * Chiama il validatore specifico per lo step attuale.
+     */
     private FormValidator.ValidationResult validateCurrentStep(int stepIndex) {
         switch (stepIndex) {
-            case 0: // Step 1
-                return FormValidator.validateStep1(eta, lavoro, entrate);
-            case 1: // Step 2
-                return FormValidator.validateStep2(speseTotali);
-            case 2: // Step 3
-                return FormValidator.validateStep3(goalMoney, goalTime);
-            case 3: // Step 4
-                return FormValidator.validateStep4(risparmi);
-            case 4: // Step 5
-                return FormValidator.validateStep5();
-            default:
-                return new FormValidator.ValidationResult();
+            case 0: return new FormValidator.ValidationResult(); // Step di benvenuto
+            case 1: return FormValidator.validateStep1(eta, lavoro, entrate);
+            case 2: return FormValidator.validateStep2(speseTotali);
+            case 3: return FormValidator.validateStep3(goalMoney, goalTime);
+            case 4: return FormValidator.validateStep4(risparmi, debitiDettaglio);
+            default: return new FormValidator.ValidationResult();
         }
     }
 
     /**
-     * Mostra i messaggi di errore
+     * Formatta e mostra un messaggio di errore in rosso.
      */
     private void showError(String error) {
         showErrors.setText(error);
@@ -202,7 +227,7 @@ public class FormController implements SetterUtente {
     }
 
     /**
-     * Pulisce i messaggi di errore
+     * Rimuove i messaggi di errore dalla UI.
      */
     private void clearErrors() {
         showErrors.setText("");
@@ -210,24 +235,42 @@ public class FormController implements SetterUtente {
     }
 
     /**
-     * Salva i dati del form
+     * Raccoglie tutti i dati dai campi UI, crea un oggetto FormData
+     * e lo assegna all'utente corrente.
      */
     public void saveFormData() {
+        // Validazione finale di tutti i campi
         FormValidator.ValidationResult validation = FormValidator.validateAllSteps(
-                eta, lavoro, entrate,
-                speseTotali,
-                goalMoney, goalTime,
-                risparmi, debitiDettaglio
+                eta, lavoro, entrate, speseTotali, goalMoney, goalTime, risparmi, debitiDettaglio
         );
 
-        if (validation.isValid()) {
-            // TODO: Salva i dati nel database
-            showSuccess("Dati salvati con successo!");
+        if (validation.isValid()){
+            // Trasferimento dati dalla UI al modello FormData
+            FormData formData = new FormData(
+                    eta.getValue(),
+                    lavoro.getText().trim(),
+                    entrate.getValue().floatValue(),
+                    speseTotali.getValue().floatValue(),
+                    goalMoney.getValue().floatValue(),
+                    goalTime.getValue().floatValue(),
+                    isfondoEmergenza.isSelected(),
+                    isfondoAuto_casa.isSelected(),
+                    isFondoViaggi.isSelected(),
+                    isfondoInvestire.isSelected(),
+                    risparmi.getValue().floatValue(),
+                    debitiDettaglio.getValue().floatValue());
+
+            // Collega i dati all'utente e cambia scena
+            utente.setFormData(formData);
+            toHomePage();
         } else {
-            showError(validation.getErrors());
+            showErrors.setText(validation.getErrors());
         }
     }
 
+    /**
+     * Feedback visivo per operazioni andate a buon fine.
+     */
     private void showSuccess(String message) {
         showErrors.setText(message);
         showErrors.setStyle("-fx-text-fill: #00aa00; -fx-font-weight: bold;");

@@ -1,5 +1,6 @@
 package com.gomiero.progettonegomiero.controllers;
 
+import com.gomiero.progettonegomiero.models.DataBase;
 import com.gomiero.progettonegomiero.models.Utente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,30 +12,28 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Stack;
 
-public class NotesController {
+public class NotesController implements GetData {
     @FXML
     private BorderPane contenutoNote;
     @FXML
     private BorderPane containerInit;
 
     private Utente utente;
-    private String tempNickName;
+    private DataBase dataBase;
 
-
-    public void setterUtente(Utente t, String nickName) {
-        this.utente = t;
-        this.tempNickName = nickName;
+    public void initialize(){
+        getData();
         contenutoNote.getChildren().clear();
-        //aggiorna UI
         aggiornaInterfaceNotes();
     }
 
-    public void setTempNickName(String tempNickName) {
-        this.tempNickName = tempNickName;
+    @Override
+    public void getData(){
+        this.dataBase = DataBase.getInstance();
+        this.utente = dataBase.getUtenteLogged();
     }
+
 
     private void aggiornaInterfaceNotes() {
         if (this.utente.getNotes().isEmpty()){
@@ -74,8 +73,6 @@ public class NotesController {
             Parent root = loader.load();
 
             HomeController homeController = loader.getController();
-            homeController.setterUtente(utente);
-            homeController.setTempNickName(tempNickName);
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
 

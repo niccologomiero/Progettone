@@ -23,6 +23,9 @@ public class Utente {
         }
         return false;
     }
+    public void setFormData(FormData formData1){
+        this.formData = formData1;
+    }
     public String getUsername(){
         return username;
     }
@@ -37,7 +40,6 @@ public class Utente {
     }
     public ArrayList<String> getTitoloNotes(){
     for (String t : notesUtente.getTitlePersonalNotes()){
-
     }
     return notesUtente.getPersonalNotes();
     }

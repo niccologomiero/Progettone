@@ -1,7 +1,7 @@
 package com.gomiero.progettonegomiero;
 
-import com.gomiero.progettonegomiero.models.DataBase;
 import com.gomiero.progettonegomiero.controllers.LoginController;
+import com.gomiero.progettonegomiero.models.DataBase;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -16,13 +16,14 @@ public class Application extends javafx.application.Application {
         Scene scene = new Scene(fxmlLoader.load(), 1024, 580);
 
         LoginController controller = fxmlLoader.getController();
-        DataBase dataBase = new DataBase();
-        controller.setUtenti(dataBase);
-
+        LoginController loginController = fxmlLoader.getController();
+        loginController.setUtenti(DataBase.getInstance());
         stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
-
+        stage.setOnCloseRequest(windowEvent -> {
+            DataBase.getInstance().saveDataToJSON();
+        });
     }
 
 
