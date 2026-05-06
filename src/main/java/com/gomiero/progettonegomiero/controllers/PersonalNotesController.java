@@ -20,9 +20,6 @@ public class PersonalNotesController {
     @FXML
     private Label errorLabel;
 
-    public void setUtente(Utente utente) {
-        this.utente = utente;
-    }
 
     public void modifyNote(ActionEvent actionEvent) {
 

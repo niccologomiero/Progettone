@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Controller per la gestione del form multi-step.
  * Gestisce l'inserimento dei dati utente, la validazione per ogni step e il salvataggio finale.
  */
-public class FormController implements SetterUtente {
+public class FormController {
 
     // Riferimento all'utente corrente
     private Utente utente;
@@ -73,15 +73,6 @@ public class FormController implements SetterUtente {
     private Spinner<Integer> debitiDettaglio;
 
     /**
-     * Implementazione dell'interfaccia SetterUtente per ricevere l'oggetto Utente
-     * da altri controller (es. dal Login).
-     */
-    @Override
-    public void setterUtente(Utente t) {
-        this.utente = t;
-    }
-
-    /**
      * Metodo di inizializzazione di JavaFX. Configura la struttura a step.
      */
     @FXML
@@ -130,9 +121,6 @@ public class FormController implements SetterUtente {
             ));
             Parent root = loader.load();
             HomeController controller = loader.getController();
-
-            // Passa l'utente aggiornato al controller della Home
-            if (controller != null) ((SetterUtente) controller).setterUtente(utente);
 
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);

@@ -62,6 +62,7 @@ public class LoginController {
         }
         utente = dataBase.getUtente(usernameField.getText());
         dataBase.setUtenteLogged(utente);
+        changeScenario();
     }
     //deprecato da gestire meglio il passaggio degli utenti
     public void changeScenario() {
@@ -87,9 +88,6 @@ public class LoginController {
                     "/com/gomiero/progettonegomiero/views/form-view.fxml"
             ));
             Parent root = loader.load();
-
-            FormController formController = loader.getController();
-            formController.setterUtente(utente);
 
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);

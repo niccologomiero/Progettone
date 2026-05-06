@@ -15,12 +15,36 @@ public class DataBase {
 
     /**Dovrà caricare i dati letti dal file
      */
-     public DataBase(){}
+     public DataBase(){
+         // 1. Creazione dell'istanza Admin
+         Utente admin = new Utente("admin", "123");
+
+// 2. Creazione dell'oggetto FormData con i valori desiderati
+         FormData datiInput = new FormData(
+                 30,             // eta
+                 "Sviluppatore", // lavoro
+                 2500.0f,        // entrate
+                 1200.0f,        // speseTotali
+                 50000.0f,       // goalMoney
+                 60.0f,          // goalTime (mesi)
+                 true,           // isFondoEmergenza
+                 false,          // isFondoMutuo
+                 true,           // isFondoViaggi
+                 true,           // fondoInvestire
+                 10000.0f,       // risparmiPregressi
+                 0.0f            // debitiPregressiTotali
+         );
+
+        // 3. Associazione dei dati all'utente tramite il metodo richiesto
+         admin.setFormData(datiInput);
+         registraUtente(admin);
+         //TODO caricare i dati dal file json;
+     }
     /**
      * Salvataggio dei dati a fine sessione, scrittura del file;
      */
     public void saveDataToJSON(){
-
+        System.out.println("save data to json");
     }
     public static DataBase getInstance(){
         if (instance == null){

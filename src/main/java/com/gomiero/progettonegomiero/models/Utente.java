@@ -1,14 +1,16 @@
 package com.gomiero.progettonegomiero.models;
 
+import com.gomiero.progettonegomiero.models.contabilities.MeseCountability;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Utente {
     private String username;
     private String password;
-    private Date dataCreazioneUtente = new Date();
     private Note notesUtente;
     private FormData formData;
+    private MeseCountability contabilities;
 
 
 
@@ -38,10 +40,13 @@ public class Utente {
     public ArrayList<String> getNotes(){
         return notesUtente.getPersonalNotes();
     }
-    public ArrayList<String> getTitoloNotes(){
-    for (String t : notesUtente.getTitlePersonalNotes()){
+
+    public MeseCountability getContabilities() {
+        return contabilities;
     }
-    return notesUtente.getPersonalNotes();
+
+    public void setContabilities(MeseCountability contabilities) {
+        this.contabilities = contabilities;
     }
     public ArrayList<Date> getDates(){
         return notesUtente.getDatesNotes();
@@ -57,7 +62,7 @@ public class Utente {
 
     @Override
     public String toString(){
-        return username + " " + password + " " + dataCreazioneUtente;
+        return username + " " + password;
     }
 
 

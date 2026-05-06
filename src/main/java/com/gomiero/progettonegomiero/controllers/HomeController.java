@@ -1,10 +1,8 @@
 package com.gomiero.progettonegomiero.controllers;
 
-import com.gomiero.progettonegomiero.Application;
 import com.gomiero.progettonegomiero.models.DataBase;
+import com.gomiero.progettonegomiero.models.GetData;
 import com.gomiero.progettonegomiero.models.Utente;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

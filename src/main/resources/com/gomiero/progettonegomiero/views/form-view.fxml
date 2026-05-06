@@ -58,7 +58,7 @@
                                             <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="50" initialValue="500" max="10000" min="0" />
                                         </valueFactory>
                                     </Spinner>
-                                    <CheckBox text="Tracci già le spese?" />
+                                    <CheckBox text="Tracci già le wallet?" />
                                 </children>
                                 <padding>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

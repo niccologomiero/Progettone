@@ -1,6 +1,7 @@
 package com.gomiero.progettonegomiero.controllers;
 
 import com.gomiero.progettonegomiero.models.DataBase;
+import com.gomiero.progettonegomiero.models.GetData;
 import com.gomiero.progettonegomiero.models.Utente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,11 +53,7 @@ public class NotesController implements GetData {
 
             // RECUPERA IL CONTROLLER DELLA SOTTOPAGINA
             Object controller = loader.getController();
-            if (loader.getController() instanceof TutorialNotesController){
-                ((TutorialNotesController) controller).setUtente(utente);
-            }else if(controller instanceof PersonalNotesController){
-                ((PersonalNotesController) controller).setUtente(utente);
-            }
+
             StackPane wrapper = new StackPane(node);
             contenutoNote.setCenter(wrapper);
         } catch (IOException e) {
@@ -71,8 +68,6 @@ public class NotesController implements GetData {
                     "/com/gomiero/progettonegomiero/views/home-view.fxml"
             ));
             Parent root = loader.load();
-
-            HomeController homeController = loader.getController();
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
 

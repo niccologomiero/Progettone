@@ -43,9 +43,6 @@ public class TutorialNotesController {
         });
     }
 
-    public void setUtente(Utente utente) {
-        this.utente = utente;
-    }
 
     public void createFirstnote(ActionEvent actionEvent) {
         // Piccolo check per evitare NullPointerException se utente non è settato

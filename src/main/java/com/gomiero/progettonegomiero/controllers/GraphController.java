@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 
 
-public class GraphController implements SetterUtente {
+public class GraphController {
     private Utente utente;
     private String tempNickName;
 
@@ -33,11 +33,6 @@ public class GraphController implements SetterUtente {
     private VBox containerInit;
     private final ObservableList<String> mesiNomi = FXCollections.observableArrayList();
 
-    public void setterUtente(Utente t) {
-        this.utente = t;
-
-    }
-
     @FXML
     private void initialize(){
     }
@@ -50,7 +45,6 @@ public class GraphController implements SetterUtente {
             Parent root = loader.load();
 
             NotesController notesController = loader.getController();
-            notesController.setterUtente(utente,tempNickName);
 
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
@@ -102,7 +96,6 @@ public class GraphController implements SetterUtente {
             Stage stage = (Stage) containerInit.getScene().getWindow();
             stage.getScene().setRoot(root);
 
-            if (controller instanceof SetterUtente) ((SetterUtente) controller).setterUtente(utente);
 
         }catch (IOException e){
             e.printStackTrace();
