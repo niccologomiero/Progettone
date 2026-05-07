@@ -4,7 +4,7 @@ package com.gomiero.progettonegomiero.models;
  * Classe Modello che rappresenta i dati finanziari e personali raccolti tramite il form.
  * Viene utilizzata per trasportare le informazioni tra i vari controller e memorizzarle nell'utente.
  */
-public class FormData {
+public class PersonalData {
 
     // --- Campi Anagrafici e Professionali ---
     private int eta;
@@ -31,7 +31,7 @@ public class FormData {
     /**
      * Costruttore completo per inizializzare tutti i parametri del form in un'unica soluzione.
      */
-    public FormData(int eta, String lavoro, float entrate, float speseTotali, float goalMoney, float goalTime, boolean isFondoEmergenza, boolean isFondoMutuo, boolean isFondoViaggi, boolean fondoInvestire, float risparmiPregressi, float debitiPregressiTotali) {
+    public PersonalData(int eta, String lavoro, float entrate, float speseTotali, float goalMoney, float goalTime, boolean isFondoEmergenza, boolean isFondoMutuo, boolean isFondoViaggi, boolean fondoInvestire, float risparmiPregressi, float debitiPregressiTotali) {
         this.eta = eta;
         this.lavoro = lavoro;
         this.entrate = entrate;

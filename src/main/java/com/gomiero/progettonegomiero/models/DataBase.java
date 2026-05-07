@@ -19,8 +19,8 @@ public class DataBase {
          // 1. Creazione dell'istanza Admin
          Utente admin = new Utente("admin", "123");
 
-// 2. Creazione dell'oggetto FormData con i valori desiderati
-         FormData datiInput = new FormData(
+// 2. Creazione dell'oggetto PersonalData con i valori desiderati
+         PersonalData datiInput = new PersonalData(
                  30,             // eta
                  "Sviluppatore", // lavoro
                  2500.0f,        // entrate

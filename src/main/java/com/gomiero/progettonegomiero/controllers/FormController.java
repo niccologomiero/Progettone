@@ -1,6 +1,6 @@
 package com.gomiero.progettonegomiero.controllers;
 
-import com.gomiero.progettonegomiero.models.FormData;
+import com.gomiero.progettonegomiero.models.PersonalData;
 import com.gomiero.progettonegomiero.models.FormValidator;
 import com.gomiero.progettonegomiero.models.Utente;
 import javafx.event.ActionEvent;
@@ -223,7 +223,7 @@ public class FormController {
     }
 
     /**
-     * Raccoglie tutti i dati dai campi UI, crea un oggetto FormData
+     * Raccoglie tutti i dati dai campi UI, crea un oggetto PersonalData
      * e lo assegna all'utente corrente.
      */
     public void saveFormData() {
@@ -233,8 +233,8 @@ public class FormController {
         );
 
         if (validation.isValid()){
-            // Trasferimento dati dalla UI al modello FormData
-            FormData formData = new FormData(
+            // Trasferimento dati dalla UI al modello PersonalData
+            PersonalData personalData = new PersonalData(
                     eta.getValue(),
                     lavoro.getText().trim(),
                     entrate.getValue().floatValue(),
@@ -249,7 +249,7 @@ public class FormController {
                     debitiDettaglio.getValue().floatValue());
 
             // Collega i dati all'utente e cambia scena
-            utente.setFormData(formData);
+            utente.setFormData(personalData);
             toHomePage();
         } else {
             showErrors.setText(validation.getErrors());

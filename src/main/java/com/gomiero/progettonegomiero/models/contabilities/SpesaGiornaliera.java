@@ -18,9 +18,11 @@ public class SpesaGiornaliera {
     // Variabile accumulatore per tenere traccia della somma totale di tutte le spese inserite
     private float sumOfDay = 0;
 
+    //
+    private Float sumMaxForCategories;
     // Mappa per memorizzare quanti elementi ci sono per ogni categoria
     private Map<String, Integer> conteggi;
-
+    private Map<String, Float> sumForCategories = new HashMap<>();
     /**
      * Aggiunge un valore di spesa a una specifica categoria.
      * Se la categoria non esiste, la crea. Aggiorna automaticamente la somma totale.
@@ -28,6 +30,12 @@ public class SpesaGiornaliera {
     public void addSpesaGiornalieraValues(String key, Float spesa) {
         // Se la chiave non esiste, crea un nuovo ArrayList, poi aggiunge il valore spesa
         spesaGiornaliera.computeIfAbsent(key, k -> new ArrayList<>()).add(spesa);
+        //Aggiorna la somma per categoria usando merge
+        spesaGiornaliera.forEach((chiave, lista) -> {
+            float totaleLista = 0;
+            for (Float f : lista) totaleLista += f;
+            sumForCategories.put(chiave, totaleLista);
+        });
         // Aggiorna il totale complessivo giornaliero
         sumOfDay += spesa;
     }
@@ -67,6 +75,16 @@ public class SpesaGiornaliera {
 
         // Calcola il rapporto tra la somma totale e il numero di transazioni
         return sumOfDay / totaleElementi;
+    }
+    //il massimo speso in un giorno su una categoria
+    public Float getMaxSumForCategoriesOfDay(){
+        final Float[] maxValue = {0f};
+        sumForCategories.forEach((key,value)->{
+         if (maxValue[0] < value){
+             maxValue[0] = value;
+         }
+     });
+      return maxValue[0];
     }
 
     // Restituisce la somma totale giornaliera accumulata

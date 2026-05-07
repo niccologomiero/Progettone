@@ -9,7 +9,7 @@ public class Utente {
     private String username;
     private String password;
     private Note notesUtente;
-    private FormData formData;
+    private PersonalData personalData;
     private MeseCountability contabilities;
 
 
@@ -20,13 +20,13 @@ public class Utente {
         this.notesUtente = new Note();
     }
     public boolean isFormSetted(){
-        if (formData != null){
+        if (personalData != null){
             return true;
         }
         return false;
     }
-    public void setFormData(FormData formData1){
-        this.formData = formData1;
+    public void setFormData(PersonalData personalData1){
+        this.personalData = personalData1;
     }
     public String getUsername(){
         return username;
@@ -43,6 +43,10 @@ public class Utente {
 
     public MeseCountability getContabilities() {
         return contabilities;
+    }
+
+    public PersonalData getPersonalData() {
+        return personalData;
     }
 
     public void setContabilities(MeseCountability contabilities) {

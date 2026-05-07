@@ -10,6 +10,11 @@ import java.util.HashMap;
  * CLASSE MeseCountability: Funge da "Contenitore Mensile".
  * Gestisce l'insieme di tutte le spese effettuate nei vari giorni di un mese specifico.
  */
+
+/**TODO:
+ *  -fare metodo getTotalSumForCategories per il mese
+ * - rivedi bene i scopi che cerchi su HomeController.java
+ */
 public class MeseCountability {
 
     // Indica a quale periodo temporale (Anno/Mese) si riferiscono i dati
@@ -57,7 +62,23 @@ public class MeseCountability {
         Collections.sort(giorniSpese);
         return giorniSpese;
     }
-
+    /**
+     * ESTRAZIONE SPESE MASSIME PER CATEGORIA AL GIORNO:
+     * Scorre sui giorni in cui vi sono state spese prende l'importo massimo tra le categorie del giorno x
+     * le somma alle stesse categorie presenti in altri giorni e ne restituisce i limitCategories massimi
+     * @param limitCategories: quante categorie si voglio prendere per la ricerca
+     */
+    //TODO da sistemare maxPerCategoria deve essere di tipo HashMap così da iterare su il massimo di somme per ogni categoria di ogni giorno
+    public ArrayList<Float> getMaxPerCategoria(int limitCategories){
+        ArrayList<Float> maxPerCategoria = new ArrayList<>();
+        portfolio.forEach((k,lista)->{
+            for (SpesaGiornaliera sp : lista){
+                maxPerCategoria.add(sp.getMaxSumForCategoriesOfDay());
+            }
+        });
+        //TODO da continuare
+        return maxPerCategoria;
+    }
     /**
      * ESTRAZIONE TOTALI GIORNALIERI:
      * Per un dato giorno, estrae la somma totale da ogni sessione presente nel portfolio.
