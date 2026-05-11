@@ -89,16 +89,20 @@
                    </Button>
                   <VBox style="-fx-background-color: #f2f2f2; -fx-background-radius: 9px; -fx-border-radius: 9px; -fx-border-color: transparent;">
                      <children>
-                             <PieChart fx:id="pieChart" prefHeight="267.0" prefWidth="234.0"  title="Grafico">
-                           <effect>
-                              <DropShadow spread="0.2">
-                                 <color>
-                                    <Color red="0.6899999976158142" green="0.6899999976158142" blue="0.6899999976158142" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </PieChart>
+                         <StackPane>
+                         <PieChart fx:id="pieChartBudget"  prefHeight="267.0" prefWidth="234.0"  title="Grafico"/>
+                             <PieChart fx:id="pieChartAverageBills" visible="false" prefHeight="267.0" prefWidth="234.0"/>
+                             <PieChart fx:id="pieChartDetailsBills" visible="true" prefHeight="267.0" prefWidth="234.0"/>
+
+                         </StackPane>
                      </children>
+                      <effect>
+                          <DropShadow spread="0.2">
+                              <color>
+                                  <Color red="0.6899999976158142" green="0.6899999976158142" blue="0.6899999976158142" />
+                              </color>
+                          </DropShadow>
+                      </effect>
                   </VBox>
                    <Button fx:id="btn_nextPiechart" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onChangePiechart" prefHeight="10.0" prefWidth="0.0" style="-fx-background-color: transparent;">
                        <graphic>

@@ -41,7 +41,13 @@ public class HomeController implements GetData {
     @FXML
     public Button btn_GoLogout, btn_GoGraph, btn_GoNotes; // Pulsanti di navigazione
     @FXML
-    private PieChart pieChart;        // Il componente grafico a torta
+    private PieChart pieChart; // Il componente grafico a torta
+    @FXML
+    private PieChart pieChartBudget;
+    @FXML
+    private PieChart pieChartAverageBills;
+    @FXML
+    private PieChart pieChartDetailsBills;
     @FXML
     private Button btn_backPiechart, btn_nextPiechart; // Pulsanti per scorrere i grafici
     @FXML
@@ -71,6 +77,8 @@ public class HomeController implements GetData {
     private void initialize() {
         getData();                // Carica i dati dell'utente
         setPieChartBudgetAmount(); // Mostra come primo grafico quello del Budget
+        setPieChartAverageBills();
+        setPieChartDetailsBills();
     }
 
     /**
@@ -78,7 +86,7 @@ public class HomeController implements GetData {
      * Stato: counterPieChart = 1.
      */
     public void setPieChartBudgetAmount() {
-        pieChart.getData().clear(); // Pulisce il grafico da dati precedenti
+        pieChartBudget.getData().clear(); // Pulisce il grafico da dati precedenti
         PieChart.Data speseData;
         PieChart.Data entrateData;
 
@@ -109,17 +117,35 @@ public class HomeController implements GetData {
         // Logica per il pulsante "Indietro"
         if (node.equals(btn_backPiechart)) {
             switch (counterPieChart) {
-                case 1 -> setPieChartDetailsBills(); // Da 1 torna al 3 (ciclico)
-                case 2 -> setPieChartBudgetAmount(); // Da 2 torna all'1
-                case 3 -> setPieChartAverageBills(); // Da 3 torna al 2
+                case 1 -> {
+                    pieChartBudget.setVisible(false);
+                pieChartAverageBills.setVisible(true);// Da 1 torna al 3 (ciclico)
+                }
+                case 2 ->{
+                    pieChartAverageBills.setVisible(false);
+                    pieChartBudget.setVisible(true);
+                } // Da 2 torna all'1
+                case 3 ->{
+                    pieChartDetailsBills.setVisible(false);
+                    pieChartAverageBills.setVisible(true);
+                }// Da 3 torna al 2
             }
         }
         // Logica per il pulsante "Avanti"
         else {
             switch (counterPieChart) {
-                case 1 -> setPieChartAverageBills(); // Da 1 va al 2
-                case 2 -> setPieChartDetailsBills(); // Da 2 va al 3
-                case 3 -> setPieChartBudgetAmount(); // Da 3 torna all'1 (ciclico)
+                case 1 -> {
+                pieChartBudget.setVisible(false);
+                pieChartAverageBills.setVisible(true);
+                } // Da 1 va al 2
+                case 2 ->{
+                    pieChartAverageBills.setVisible(false);
+                    pieChartDetailsBills.setVisible(true);
+                } // Da 2 va al 3
+                case 3 -> {
+                    pieChartDetailsBills.setVisible(false);
+                    pieChartBudget.setVisible(true);
+                } // Da 3 torna all'1 (ciclico)
             }
         }
     }
@@ -129,13 +155,13 @@ public class HomeController implements GetData {
      * Stato: counterPieChart = 2.
      */
     public void setPieChartAverageBills() {
-        pieChart.getData().clear();
+        pieChartAverageBills.getData().clear();
         chartData = new ArrayList<>();
 
         // Recupera la lista delle medie (SimpleEntry è una coppia Chiave-Valore)
         List<AbstractMap.SimpleEntry<String, Float>> lista = meseCountability.getAverageBills(5);
         if (lista.isEmpty()){
-            pieChart.getData().add(new PieChart.Data("Vuoto", 1));
+            pieChartAverageBills.getData().add(new PieChart.Data("Vuoto", 1));
 
         }else {
             // Trasforma i dati del modello in dati per il grafico JavaFX
@@ -145,7 +171,7 @@ public class HomeController implements GetData {
         }
 
 
-        pieChart.setTitle("Spese abitudinarie");
+        pieChartAverageBills.setTitle("Spese abitudinarie");
         counterPieChart = 2;
     }
 
@@ -154,20 +180,20 @@ public class HomeController implements GetData {
      * Stato: counterPieChart = 3.
      */
     public void setPieChartDetailsBills() {
-        pieChart.getData().clear();
+        pieChartDetailsBills.getData().clear();
 
         if (meseCountability.getSpeseTotaliMensili() == 0) {
             // Se non ci sono spese, mostra un grafico vuoto o di default
-            pieChart.getData().add(new PieChart.Data("Vuoto", 1));
+            pieChartDetailsBills.getData().add(new PieChart.Data("Vuoto", 1));
 
         } else {
             chartData = new ArrayList<>();
             // Recupera la lista dettagliata delle spese
             List<AbstractMap.SimpleEntry<String, Float>> lista = meseCountability.getDetailsBills();
             lista.forEach(token ->chartData.add(new PieChart.Data(token.getKey(), token.getValue())));
-            pieChart.getData().addAll(chartData);
+            pieChartDetailsBills.getData().addAll(chartData);
         }
-        pieChart.setTitle("Spese nel dettaglio");
+        pieChartDetailsBills.setTitle("Spese nel dettaglio");
         counterPieChart = 3;
     }
 
