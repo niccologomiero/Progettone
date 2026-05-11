@@ -15,16 +15,8 @@
                 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="245.0" prefWidth="240.0" spacing="15.0">
                     <StackPane prefHeight="400.0" prefWidth="350.0">
                         <children>
-                            <!-- Step 0 -->
-                            <VBox fx:id="step1" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" spacing="50.0" visible="true">
-                        <children>
-                           <Label text="Benvenuto" />
-                           <Label />
-                           <TextArea prefHeight="462.0" prefWidth="234.0" text="Salve,ti chiediamo di rispondere a tutte le domande al fine di poter completare il suo profilo" />
-                        </children>
-                            </VBox>
                             <!-- Step 1 -->
-                            <VBox fx:id="step2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" spacing="15.0" visible="false">
+                            <VBox fx:id="step1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" spacing="15.0">
                                 <children>
                                     <Label style="-fx-font-weight: bold;" text="1. Informazioni di base" />
                                     <Label text="Età:" />
@@ -106,7 +98,7 @@
                                     <Label text="Risparmi accumulati (€):" />
                                     <Spinner fx:id="risparmi" amountToStepBy="100" editable="true" initialValue="0" max="10000" min="0" prefWidth="100.0" />
                                     <CheckBox text="Hai debiti attivi?" />
-                                    <Spinner fx:id="debitiDettaglio" prefHeight="50.0" prefWidth="250.0" amountToStepBy="100" initialValue="0" max="10000" min="0"  promptText="Rata mensile o totale..." />
+                                    <Spinner fx:id="debitiDettaglio" amountToStepBy="100" initialValue="0" max="10000" min="0" prefHeight="50.0" prefWidth="250.0" promptText="Rata mensile o totale..." />
                                 </children>
                                 <padding>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -126,7 +118,7 @@
                                     </ImageView>
                                 </graphic>
                             </Button>
-                            <Button text="Salva!" fx:id="btn_SaveData" onAction="#onSave"  visible="false"/>
+                            <Button fx:id="btn_SaveData" onAction="#onSave" text="Salva!" visible="false" />
                             <Button fx:id="btn_next_Step" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onChangeStep" prefHeight="10.0" prefWidth="0.0" style="-fx-background-color: transparent;">
                                 <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="6.0" layoutY="138.0" mouseTransparent="true">
@@ -144,35 +136,54 @@
         </VBox>
     </center>
     <left>
-        <VBox alignment="CENTER" prefHeight="697.0" prefWidth="52.0" spacing="12.0" style="-fx-background-color: #2e362e;">
-            <VBox alignment="CENTER" prefHeight="38.0" prefWidth="36.0">
-                <children>
-                    <Button fx:id="btn_GoLogout" onAction="#ReturnPage" style="-fx-background-color: transparent;">
-                        <graphic>
-                            <ImageView fitHeight="25.0" fitWidth="20.0" layoutX="6.0" layoutY="138.0" mouseTransparent="true">
-                                <image>
-                                    <Image url="@../Images/Icon-log_out.png" />
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Label text="Log out" textFill="RED">
-                        <font>
-                            <Font size="10.0" />
-                        </font>
-                    </Label>
-                </children>
-                <effect>
-                    <DropShadow spread="0.5">
-                        <color>
-                            <Color red="1.0" />
-                        </color>
-                    </DropShadow>
-                </effect>
-            </VBox>
-            <padding>
-                <Insets bottom="50.0" />
-            </padding>
-        </VBox>
+      <BorderPane style="-fx-background-color: linear-gradient(to bottom right, #2A3A31, #1D2922, #121915);">
+         <center>
+              <VBox alignment="CENTER" prefHeight="697.0" prefWidth="408.0" spacing="12.0">
+               <Label text="Prima di iniziare.." textFill="WHITE">
+                  <font>
+                     <Font name="Segoe UI Light" size="28.0" />
+                  </font>
+               </Label>
+               <Label text="completa il profilo!" textFill="WHITE">
+                  <font>
+                     <Font name="Segoe UI Light" size="27.0" />
+                  </font>
+               </Label>
+                  <padding>
+                      <Insets bottom="50.0" />
+                  </padding>
+              </VBox>
+         </center>
+         <bottom>
+               <VBox alignment="CENTER" prefHeight="38.0" prefWidth="36.0" BorderPane.alignment="CENTER">
+                   <children>
+                       <Button fx:id="btn_GoLogout" onAction="#ReturnPage" style="-fx-background-color: transparent;">
+                           <graphic>
+                               <ImageView fitHeight="25.0" fitWidth="20.0" layoutX="6.0" layoutY="138.0" mouseTransparent="true">
+                                   <image>
+                                       <Image url="@../Images/Icon-log_out.png" />
+                                   </image>
+                               </ImageView>
+                           </graphic>
+                       </Button>
+                       <Label text="Log out" textFill="RED">
+                           <font>
+                               <Font size="10.0" />
+                           </font>
+                       </Label>
+                   </children>
+                   <effect>
+                       <DropShadow spread="0.5">
+                           <color>
+                               <Color red="1.0" />
+                           </color>
+                       </DropShadow>
+                   </effect>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+               </VBox>
+         </bottom>
+      </BorderPane>
     </left>
 </BorderPane>

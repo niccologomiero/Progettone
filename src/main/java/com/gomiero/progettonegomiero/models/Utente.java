@@ -17,7 +17,7 @@ public class Utente {
     public Utente(String email, String password) {
         this.username = email;
         this.password = password;
-        this.notesUtente = new Note();
+        contabilities = new MeseCountability();
     }
     public boolean isFormSetted(){
         if (personalData != null){

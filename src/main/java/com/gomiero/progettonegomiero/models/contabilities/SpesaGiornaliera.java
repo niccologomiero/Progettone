@@ -77,14 +77,16 @@ public class SpesaGiornaliera {
         return sumOfDay / totaleElementi;
     }
     //il massimo speso in un giorno su una categoria
-    public Float getMaxSumForCategoriesOfDay(){
+    public HashMap<String,Float> getMaxSumForCategoriesOfDay(){
+        HashMap<String,Float> hashMapMaxForCategories = new HashMap<>();
         final Float[] maxValue = {0f};
         sumForCategories.forEach((key,value)->{
          if (maxValue[0] < value){
              maxValue[0] = value;
+             hashMapMaxForCategories.put(key,maxValue[0]);
          }
      });
-      return maxValue[0];
+      return hashMapMaxForCategories;
     }
 
     // Restituisce la somma totale giornaliera accumulata

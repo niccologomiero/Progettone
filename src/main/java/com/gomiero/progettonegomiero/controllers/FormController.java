@@ -131,9 +131,12 @@ public class FormController {
 
     /**
      * Handler per il pulsante di salvataggio finale.
+     * Dal form si passa home page dell'app
+     * @param actionEvent evento fxml
      */
     public void onSave(ActionEvent actionEvent){
         saveFormData();
+        toHomePage();
     }
 
     /**
@@ -197,11 +200,11 @@ public class FormController {
      */
     private FormValidator.ValidationResult validateCurrentStep(int stepIndex) {
         switch (stepIndex) {
-            case 0: return new FormValidator.ValidationResult(); // Step di benvenuto
-            case 1: return FormValidator.validateStep1(eta, lavoro, entrate);
-            case 2: return FormValidator.validateStep2(speseTotali);
-            case 3: return FormValidator.validateStep3(goalMoney, goalTime);
-            case 4: return FormValidator.validateStep4(risparmi, debitiDettaglio);
+            //case 0: return new FormValidator.ValidationResult(); // Step di benvenuto
+            case 0: return FormValidator.validateStep1(eta, lavoro, entrate);
+            case 1: return FormValidator.validateStep2(speseTotali);
+            case 2: return FormValidator.validateStep3(goalMoney, goalTime);
+            case 3: return FormValidator.validateStep4(risparmi, debitiDettaglio);
             default: return new FormValidator.ValidationResult();
         }
     }

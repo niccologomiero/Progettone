@@ -1,9 +1,8 @@
 package com.gomiero.progettonegomiero.models.contabilities;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -12,7 +11,7 @@ import java.util.HashMap;
  */
 
 /**TODO:
- *  -fare metodo getTotalSumForCategories per il mese
+ *  -fare metodo getTotalSumForCategories per il mese FATTO
  * - rivedi bene i scopi che cerchi su HomeController.java
  */
 public class MeseCountability {
@@ -23,7 +22,7 @@ public class MeseCountability {
     // Portfolio: La struttura dati principale (Nidificata).
     // Associa ogni giorno (Integer) a una lista di oggetti "SpesaGiornaliera".
     // L'ArrayList permette di avere più "sessioni" o "gruppi" di spesa nello stesso giorno.
-    private HashMap<Integer, ArrayList<SpesaGiornaliera>> portfolio = new HashMap<>();
+    private HashMap<Integer, ArrayList<SpesaGiornaliera>> mensilitaDetails = new HashMap<>();
 
     // Accumulatore: tiene il conto in tempo reale di quanto speso in tutto il mese
     // per evitare di ricalcolarlo ogni volta (ottimizzazione delle prestazioni).
@@ -38,7 +37,7 @@ public class MeseCountability {
 
     // Verifica se un giorno specifico ha già dei dati inseriti nel wallet.
     private boolean existsKey(int day){
-        return portfolio.containsKey(day);
+        return mensilitaDetails.containsKey(day);
     }
 
     /**
@@ -47,7 +46,7 @@ public class MeseCountability {
      * Se il giorno è nuovo, crea lo spazio in memoria (computeIfAbsent).
      */
     public void addSpeseMensili(int day, SpesaGiornaliera spesaGiornaliera) {
-        portfolio.computeIfAbsent(day, tipoSpesa -> new ArrayList<>()).add(spesaGiornaliera);
+        mensilitaDetails.computeIfAbsent(day, tipoSpesa -> new ArrayList<>()).add(spesaGiornaliera);
         // Aggiorna istantaneamente il totale mensile
         this.speseTotaliMensili += spesaGiornaliera.getSumOfDay();
     }
@@ -58,35 +57,97 @@ public class MeseCountability {
      * Collections.sort assicura che i giorni siano in ordine (1, 2, 3...).
      */
     public ArrayList<Integer> getAllDates(){
-        ArrayList<Integer> giorniSpese = new ArrayList<>(portfolio.keySet());
+        ArrayList<Integer> giorniSpese = new ArrayList<>(mensilitaDetails.keySet());
         Collections.sort(giorniSpese);
         return giorniSpese;
     }
+
     /**
-     * ESTRAZIONE SPESE MASSIME PER CATEGORIA AL GIORNO:
-     * Scorre sui giorni in cui vi sono state spese prende l'importo massimo tra le categorie del giorno x
-     * le somma alle stesse categorie presenti in altri giorni e ne restituisce i limitCategories massimi
-     * @param limitCategories: quante categorie si voglio prendere per la ricerca
+     * ESTRAZIONE TOP CATEGORIE PER SPESA TOTALE:
+     * Estrae le categorie in cui si è speso di più in assoluto, sommando i valori
+     * della stessa categoria presenti in giorni diversi.
+     *
+     * @param limitCategories Numero di categorie con spesa maggiore da restituire.
+     * @return Lista delle top N categorie ordinate per spesa totale decrescente.
      */
-    //TODO da sistemare maxPerCategoria deve essere di tipo HashMap così da iterare su il massimo di somme per ogni categoria di ogni giorno
-    public ArrayList<Float> getMaxPerCategoria(int limitCategories){
-        ArrayList<Float> maxPerCategoria = new ArrayList<>();
-        portfolio.forEach((k,lista)->{
-            for (SpesaGiornaliera sp : lista){
-                maxPerCategoria.add(sp.getMaxSumForCategoriesOfDay());
+    public List<AbstractMap.SimpleEntry<String, Float>> getAverageBills(int limitCategories) {
+        // 1. Raccolta dati iniziale (come nel tuo codice)
+        HashMap<Integer, HashMap<String, Float>> temp = new HashMap<>();
+        mensilitaDetails.forEach((k, lista) -> {
+            for (SpesaGiornaliera sp : lista) {
+                temp.put(k, sp.getMaxSumForCategoriesOfDay());
             }
         });
-        //TODO da continuare
-        return maxPerCategoria;
+
+        // --- LOGICA STREAM CON RAGGRUPPAMENTO E SOMMA ---
+        return temp.values().stream()
+                // a. "Schiacciamo" tutte le HashMap interne in un unico flusso di Entry (Categoria=Valore)
+                .flatMap(mappa -> mappa.entrySet().stream())
+
+                // b. Raggruppiamo per nome categoria e sommiamo i valori (Float)
+                // Collectors.groupingBy crea una mappa intermedia dove la chiave è il nome
+                // e il valore è la somma di tutti i Float trovati per quella chiave.
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getKey,
+                        Collectors.summingDouble(Map.Entry::getValue)
+                ))
+
+                // c. Adesso abbiamo una Map<String, Double>. Riapriamo lo stream sulle sue Entry
+                .entrySet().stream()
+
+                // d. Convertiamo i Double (usati per la somma) di nuovo in Float per coerenza con il metodo
+                // e ordiniamo in modo decrescente (dal valore più alto)
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().floatValue()))
+                .sorted(Map.Entry.<String, Float>comparingByValue().reversed())
+
+                // e. Prendiamo solo le prime N categorie sommate
+                .limit(limitCategories)
+                .toList();
     }
+    public List<AbstractMap.SimpleEntry<String, Float>> getDetailsBills() {
+        // 1. Raccolta dati iniziale (come nel tuo codice)
+        HashMap<Integer, HashMap<String, Float>> temp = new HashMap<>();
+        mensilitaDetails.forEach((k, lista) -> {
+            for (SpesaGiornaliera sp : lista) {
+                temp.put(k, sp.getMaxSumForCategoriesOfDay());
+            }
+        });
+
+        // --- LOGICA STREAM CON RAGGRUPPAMENTO E SOMMA ---
+        return temp.values().stream()
+                // a. "Schiacciamo" tutte le HashMap interne in un unico flusso di Entry (Categoria=Valore)
+                .flatMap(mappa -> mappa.entrySet().stream())
+
+                // b. Raggruppiamo per nome categoria e sommiamo i valori (Float)
+                // Collectors.groupingBy crea una mappa intermedia dove la chiave è il nome
+                // e il valore è la somma di tutti i Float trovati per quella chiave.
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getKey,
+                        Collectors.summingDouble(Map.Entry::getValue)
+                ))
+
+                // c. Adesso abbiamo una Map<String, Double>. Riapriamo lo stream sulle sue Entry
+                .entrySet().stream()
+
+                // d. Convertiamo i Double (usati per la somma) di nuovo in Float per coerenza con il metodo
+                // e ordiniamo in modo decrescente (dal valore più alto)
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().floatValue()))
+                .sorted(Map.Entry.<String, Float>comparingByValue().reversed())
+
+                // e. Prendiamo solo tutte categorie sommate
+                .toList();
+    }
+
+
+
     /**
      * ESTRAZIONE TOTALI GIORNALIERI:
-     * Per un dato giorno, estrae la somma totale da ogni sessione presente nel portfolio.
+     * Per un dato giorno, estrae la somma totale da ogni sessione presente nel mensilitaDetails.
      */
     public ArrayList<Float> getSpesaGiornaliera(int day) {
         ArrayList<Float> listaSpeseGiornaliere = new ArrayList<>();
-        // Controllo di sicurezza: se il giorno non esiste nel portfolio, restituisce lista vuota
-        ArrayList<SpesaGiornaliera> sessioniGiorno = portfolio.get(day);
+        // Controllo di sicurezza: se il giorno non esiste nel mensilitaDetails, restituisce lista vuota
+        ArrayList<SpesaGiornaliera> sessioniGiorno = mensilitaDetails.get(day);
         if (sessioniGiorno != null) {
             for (SpesaGiornaliera sessione : sessioniGiorno){
                 listaSpeseGiornaliere.add(sessione.getSumOfDay());
@@ -101,7 +162,7 @@ public class MeseCountability {
      */
     public ArrayList<Float> getMediaGiornaliera(int day) {
         ArrayList<Float> listaMedieGiornaliere = new ArrayList<>();
-        ArrayList<SpesaGiornaliera> sessioniGiorno = portfolio.get(day);
+        ArrayList<SpesaGiornaliera> sessioniGiorno = mensilitaDetails.get(day);
         if (sessioniGiorno != null) {
             for (SpesaGiornaliera sessione : sessioniGiorno){
                 listaMedieGiornaliere.add(sessione.getAverageSpesa());
@@ -113,14 +174,14 @@ public class MeseCountability {
     /**
      * MEDIA MENSILE (LOGICA NIDIFICATA):
      * Scansiona ogni lista di ogni giorno per trovare la media di TUTTE le transazioni del mese.
-     * Entra nel portfolio -> Prende la lista del giorno -> Analizza ogni oggetto SpesaGiornaliera.
+     * Entra nel mensilitaDetails -> Prende la lista del giorno -> Analizza ogni oggetto SpesaGiornaliera.
      */
     public Float getMediaMensile(){
         float sommaTotale = 0;
         int conteggioOggetti = 0;
 
         // Ciclo esterno: scorre le liste dei vari giorni
-        for (ArrayList<SpesaGiornaliera> listaGiorno : portfolio.values()){
+        for (ArrayList<SpesaGiornaliera> listaGiorno : mensilitaDetails.values()){
             // Ciclo interno: scorre le sessioni dentro il singolo giorno
             for (SpesaGiornaliera sessione : listaGiorno){
                 sommaTotale += sessione.getSumOfDay();
