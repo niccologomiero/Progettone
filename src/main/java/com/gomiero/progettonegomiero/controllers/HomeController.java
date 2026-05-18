@@ -34,8 +34,8 @@ public class HomeController implements GetData {
     private int counterPieChart = 0;          // Stato attuale del grafico (1: Budget, 2: Medie, 3: Dettagli)
 
     // --- Elementi UI iniettati dal file FXML ---
-    @FXML
-    private ArrayList<PieChart.Data> chartData; // Nota: di solito non è @FXML se non è un elemento grafico
+    private List<PieChart> piecharts = new ArrayList<>(); // Nota: di solito non è @FXML se non è un elemento grafico
+    private int currentPieIndex = 0;
     @FXML
     private Label welcomeUser;        // Messaggio di benvenuto (es: "Mario's Home")
     @FXML
@@ -75,132 +75,132 @@ public class HomeController implements GetData {
      */
     @FXML
     private void initialize() {
-        getData();                // Carica i dati dell'utente
-        setPieChartBudgetAmount(); // Mostra come primo grafico quello del Budget
+        getData(); // Carica i dati utente
+
+        // Popoliamo la lista dei grafici
+        piecharts.add(pieChartBudget);
+        piecharts.add(pieChartAverageBills);
+        piecharts.add(pieChartDetailsBills);
+
+        // Nasconde la legenda sotto il grafico
+        pieChartBudget.setLegendVisible(false);
+        pieChartAverageBills.setLegendVisible(false);
+        pieChartDetailsBills.setLegendVisible(false);
+
+        // --- RIMOZIONE DELLE PAROLE/ETICHETTE SUL GRAFICO ---
+        pieChartBudget.setLabelsVisible(false);
+        pieChartAverageBills.setLabelsVisible(false);
+        pieChartDetailsBills.setLabelsVisible(false);
+        // -----------------------------------------------------
+
+        // Configura e popola i dati
+        setPieChartBudgetAmount();
         setPieChartAverageBills();
         setPieChartDetailsBills();
+
+        // Stato iniziale della visibilità
+        updatePieChartsVisibility();
     }
 
     /**
-     * Configura il PieChart per mostrare il rapporto tra Entrate (Stipendio) e Uscite.
-     * Stato: counterPieChart = 1.
+     * Configura il PieChart del Budget (Entrate vs Uscite).
      */
     public void setPieChartBudgetAmount() {
-        pieChartBudget.getData().clear(); // Pulisce il grafico da dati precedenti
-        PieChart.Data speseData;
-        PieChart.Data entrateData;
+        pieChartBudget.getData().clear();
+        pieChartBudget.setTitle("Budget del mese");
+
+        if (utente == null || meseCountability == null) return;
 
         float stipendio = utente.getPersonalData().getEntrate();
         float spese_attuali = meseCountability.getSpeseTotaliMensili();
 
         if (spese_attuali == 0) {
-            // Se non ci sono spese, mostra solo il totale delle entrate
-            entrateData = new PieChart.Data("Budget", 1);
-            pieChart.getData().add(entrateData);
+            pieChartBudget.getData().add(new PieChart.Data("Budget Disponibile (Intero)", stipendio > 0 ? stipendio : 1));
+
         } else {
-            // Mostra il residuo (stipendio - spese) e le uscite totali
-            entrateData = new PieChart.Data("entrate", stipendio - spese_attuali);
-            speseData = new PieChart.Data("uscite", spese_attuali);
-            pieChart.getData().addAll(entrateData, speseData);
-        }
-        pieChart.setTitle("Budget del mese"); // Imposta il titolo visibile
-        counterPieChart = 1;
-    }
-
-    /**
-     * Gestisce la rotazione dei grafici (Avanti/Indietro).
-     * @param actionEvent L'evento generato dal click sui pulsanti freccia.
-     */
-    public void onChangePiechart(ActionEvent actionEvent) {
-        Node node = (Node) actionEvent.getSource();
-
-        // Logica per il pulsante "Indietro"
-        if (node.equals(btn_backPiechart)) {
-            switch (counterPieChart) {
-                case 1 -> {
-                    pieChartBudget.setVisible(false);
-                pieChartAverageBills.setVisible(true);// Da 1 torna al 3 (ciclico)
-                }
-                case 2 ->{
-                    pieChartAverageBills.setVisible(false);
-                    pieChartBudget.setVisible(true);
-                } // Da 2 torna all'1
-                case 3 ->{
-                    pieChartDetailsBills.setVisible(false);
-                    pieChartAverageBills.setVisible(true);
-                }// Da 3 torna al 2
-            }
-        }
-        // Logica per il pulsante "Avanti"
-        else {
-            switch (counterPieChart) {
-                case 1 -> {
-                pieChartBudget.setVisible(false);
-                pieChartAverageBills.setVisible(true);
-                } // Da 1 va al 2
-                case 2 ->{
-                    pieChartAverageBills.setVisible(false);
-                    pieChartDetailsBills.setVisible(true);
-                } // Da 2 va al 3
-                case 3 -> {
-                    pieChartDetailsBills.setVisible(false);
-                    pieChartBudget.setVisible(true);
-                } // Da 3 torna all'1 (ciclico)
-            }
+            float residuo = stipendio - spese_attuali;
+            // Se le spese superano lo stipendio, evitiamo fette negative nel grafico
+            pieChartBudget.getData().add(new PieChart.Data("Entrate Residue", Math.max(0, residuo)));
+            pieChartBudget.getData().add(new PieChart.Data("Uscite", spese_attuali));
         }
     }
-
     /**
      * Configura il PieChart per mostrare la media delle bollette/spese abitudinarie.
-     * Stato: counterPieChart = 2.
      */
     public void setPieChartAverageBills() {
         pieChartAverageBills.getData().clear();
-        chartData = new ArrayList<>();
-
-        // Recupera la lista delle medie (SimpleEntry è una coppia Chiave-Valore)
-        List<AbstractMap.SimpleEntry<String, Float>> lista = meseCountability.getAverageBills(5);
-        if (lista.isEmpty()){
-            pieChartAverageBills.getData().add(new PieChart.Data("Vuoto", 1));
-
-        }else {
-            // Trasforma i dati del modello in dati per il grafico JavaFX
-            lista.forEach(token -> chartData.add(new PieChart.Data(token.getKey(), token.getValue())));
-
-            pieChart.getData().addAll(chartData);
-        }
-
-
         pieChartAverageBills.setTitle("Spese abitudinarie");
-        counterPieChart = 2;
+
+        if (meseCountability == null) return;
+
+        List<AbstractMap.SimpleEntry<String, Float>> lista = meseCountability.getAverageBills(5);
+        if (lista == null || lista.isEmpty()) {
+            pieChartAverageBills.getData().add(new PieChart.Data("", 1));
+            pieChartAverageBills.setStyle(".default-color0.chart-pie { -fx-pie-color: #d3d3d3; }");
+        } else {
+            ArrayList<PieChart.Data> chartData = new ArrayList<>();
+            lista.forEach(token -> chartData.add(new PieChart.Data(token.getKey(), token.getValue())));
+            pieChartAverageBills.getData().addAll(chartData);
+        }
     }
 
     /**
      * Configura il PieChart per mostrare il dettaglio analitico delle spese.
-     * Stato: counterPieChart = 3.
      */
     public void setPieChartDetailsBills() {
         pieChartDetailsBills.getData().clear();
-
-        if (meseCountability.getSpeseTotaliMensili() == 0) {
-            // Se non ci sono spese, mostra un grafico vuoto o di default
-            pieChartDetailsBills.getData().add(new PieChart.Data("Vuoto", 1));
-
-        } else {
-            chartData = new ArrayList<>();
-            // Recupera la lista dettagliata delle spese
-            List<AbstractMap.SimpleEntry<String, Float>> lista = meseCountability.getDetailsBills();
-            lista.forEach(token ->chartData.add(new PieChart.Data(token.getKey(), token.getValue())));
-            pieChartDetailsBills.getData().addAll(chartData);
-        }
         pieChartDetailsBills.setTitle("Spese nel dettaglio");
-        counterPieChart = 3;
+
+        if (meseCountability == null || meseCountability.getSpeseTotaliMensili() == 0) {
+            pieChartDetailsBills.getData().add(new PieChart.Data("Nessuna spesa", 1));
+        } else {
+            List<AbstractMap.SimpleEntry<String, Float>> lista = meseCountability.getDetailsBills();
+            if (lista != null) {
+                ArrayList<PieChart.Data> chartData = new ArrayList<>();
+                lista.forEach(token -> chartData.add(new PieChart.Data(token.getKey(), token.getValue())));
+                pieChartDetailsBills.getData().addAll(chartData);
+            }
+        }
     }
+
+    @FXML
+    public void onChangePiechart(ActionEvent actionEvent) {
+        Node sourceNode = (Node) actionEvent.getSource();
+
+        if (sourceNode.equals(btn_backPiechart)) {
+            // Sposta indietro (se sotto zero, ricomincia dalla fine)
+            currentPieIndex--;
+            if (currentPieIndex < 0) {
+                currentPieIndex = piecharts.size() - 1;
+            }
+        } else if (sourceNode.equals(btn_nextPiechart)) {
+            // Sposta avanti (se supera la dimensione, ricomincia da zero)
+            currentPieIndex++;
+            if (currentPieIndex >= piecharts.size()) {
+                currentPieIndex = 0;
+            }
+        }
+
+        // Applica i cambiamenti di visibilità sulla base del nuovo indice corrente
+        updatePieChartsVisibility();
+    }
+
+    /**
+     * Helper Method: Imposta visibile solo il grafico corrispondente a `currentPieIndex`.
+     */
+    private void updatePieChartsVisibility() {
+        for (int i = 0; i < piecharts.size(); i++) {
+            piecharts.get(i).setVisible(i == currentPieIndex);
+        }
+    }
+
+
 
     /**
      * Metodo specifico per navigare verso la sezione Note.
      * Carica il file FXML delle note e lo imposta come radice della scena.
      */
+    @FXML
     public void goToNotes(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -220,6 +220,7 @@ public class HomeController implements GetData {
      * (Deprecato) Metodo per tornare al Login.
      * Si consiglia di usare changePage() per uniformità.
      */
+    @FXML
     public void ReturnPage(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
